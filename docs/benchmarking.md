@@ -63,24 +63,27 @@ Models currently tracked:
 
 Snapshot date: 2026-09-15.
 
-| Setting | Best current result |
-|---|---|
-| Clinical-only baseline | AUROC 0.735, AP 0.502, balanced accuracy 0.642 |
-| Image-only AUROC | Curia expert-ROI phase2-minus-phase0, AUROC 0.630 |
-| Image-only AP | Curia expert-ROI selected ROI fusion, AP 0.446 |
-| Image-only balanced accuracy | Curia expert-ROI phase2-minus-phase0, balanced accuracy 0.578 |
-| Image + clinical AUROC | BiomedCLIP whole-volume phase1 + clinical, AUROC 0.739 |
-| Image + clinical AP | BiomedCLIP whole-volume phase1 + clinical, AP 0.553 |
-| Image + clinical balanced accuracy | Curia expert-ROI phase2-minus-phase0 + clinical, balanced accuracy 0.658 |
+| Setting | Model | Crop/input | AUROC | AP | Bal Acc | Run |
+|---|---|---|---:|---:|---:|---|
+| Clinical-only | Clinical baseline | Clinical variables | 0.735 | 0.502 | 0.642 | `clinical_logreg` |
+| Best image-only AUROC | Curia | Expert ROI, phase 2 - phase 0 | 0.630 | 0.434 | 0.578 | `curia_expert_roi_phase2_minus_phase0_logreg` |
+| Best image-only AP | Curia | Expert ROI, selected ROI fusion | 0.608 | 0.446 | 0.546 | `curia_expert_roi_selected_fusion_logreg` |
+| Best image + clinical AUROC/AP | BiomedCLIP | Whole volume, phase 1 + clinical | 0.739 | 0.553 | 0.605 | `biomedclip_whole_phase1_image_clinical_logreg` |
+| Best image + clinical balanced accuracy | Curia | Expert ROI, phase 2 - phase 0 + clinical | 0.724 | 0.543 | 0.658 | `curia_expert_roi_phase2_minus_phase0_image_clinical_logreg` |
 
 The key interpretation so far is that clinical-only remains a strong baseline.
 The best image-plus-clinical runs improve AP and/or balanced accuracy, but none
 clearly dominates clinical-only across all metrics yet.
 
+For detailed per-model tables with sensitivity, specificity, precision, F1,
+embedding dimensionality, test-set size, and exact run names, see
+[`docs/benchmark_results.md`](benchmark_results.md).
+
 ## Result Files
 
 Headline summaries:
 
+- `docs/benchmark_results.md`
 - `Benchmarking/outputs/summaries/cross_model_first_pass_summary.md`
 - `Benchmarking/outputs/summaries/cross_model_all_results.md`
 - `Benchmarking/outputs/summaries/cross_model_first_pass_comparison.csv`

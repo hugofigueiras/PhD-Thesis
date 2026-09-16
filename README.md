@@ -34,6 +34,7 @@ local caches, and original DICOM/source-data mirrors are intentionally excluded.
 |   |-- dataset.md
 |   |-- reconstruction_workflow.md
 |   |-- benchmarking.md
+|   |-- benchmark_results.md
 |   `-- repository_contents.md
 |-- DatasetRelease/
 |   `-- reconstructed_mamamia_longitudinal/
@@ -91,16 +92,18 @@ and the live experiment matrix is in
 
 Headline first-pass results so far:
 
-| Setting | Best current result |
-|---|---|
-| Clinical-only baseline | AUROC 0.735, AP 0.502, balanced accuracy 0.642 |
-| Image-only AUROC | Curia expert-ROI phase2-minus-phase0, AUROC 0.630 |
-| Image-only AP | Curia expert-ROI selected ROI fusion, AP 0.446 |
-| Image + clinical AUROC/AP | BiomedCLIP whole-volume phase1 + clinical, AUROC 0.739, AP 0.553 |
-| Image + clinical balanced accuracy | Curia expert-ROI phase2-minus-phase0 + clinical, balanced accuracy 0.658 |
+| Setting | Model | Crop/input | AUROC | AP | Bal Acc | Run |
+|---|---|---|---:|---:|---:|---|
+| Clinical-only | Clinical baseline | Clinical variables | 0.735 | 0.502 | 0.642 | `clinical_logreg` |
+| Best image-only AUROC | Curia | Expert ROI, phase 2 - phase 0 | 0.630 | 0.434 | 0.578 | `curia_expert_roi_phase2_minus_phase0_logreg` |
+| Best image-only AP | Curia | Expert ROI, selected ROI fusion | 0.608 | 0.446 | 0.546 | `curia_expert_roi_selected_fusion_logreg` |
+| Best image + clinical AUROC/AP | BiomedCLIP | Whole volume, phase 1 + clinical | 0.739 | 0.553 | 0.605 | `biomedclip_whole_phase1_image_clinical_logreg` |
+| Best image + clinical balanced accuracy | Curia | Expert ROI, phase 2 - phase 0 + clinical | 0.724 | 0.543 | 0.658 | `curia_expert_roi_phase2_minus_phase0_image_clinical_logreg` |
 
 See [docs/benchmarking.md](docs/benchmarking.md) and
-[Benchmarking/outputs/summaries/cross_model_first_pass_summary.md](Benchmarking/outputs/summaries/cross_model_first_pass_summary.md).
+[docs/benchmark_results.md](docs/benchmark_results.md) for the detailed
+per-model result tables. The full exported table is also stored in
+[Benchmarking/outputs/summaries/cross_model_first_pass_comparison.csv](Benchmarking/outputs/summaries/cross_model_first_pass_comparison.csv).
 
 ## What Is Not Stored Here
 
