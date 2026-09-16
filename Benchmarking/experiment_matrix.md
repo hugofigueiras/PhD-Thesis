@@ -22,6 +22,19 @@ benchmark. The goal is to keep the benchmark interpretable:
 
 ## Current Status
 
+Current snapshot: 73 completed probe runs, consisting of 1 clinical-only run,
+56 image-only embedding runs, and 16 image-plus-clinical runs.
+
+The matrix varies:
+
+| Dimension | Values currently represented |
+|---|---|
+| Foundation model | Pillar-0 BreastMRI, RadioDINO, BiomedCLIP, Curia, MedSigLIP |
+| Image crop | Whole volume, expert ROI |
+| DCE input | Phase 0, phase 1, phase 2, last phase, post-contrast subtraction, raw phase fusion, subtraction fusion, all-DCE fusion, Pillar-0 3D phase triplets |
+| Feature set | Clinical-only, image-only, image-plus-clinical |
+| Classifier | L2-regularized logistic regression |
+
 | Priority | Model/Input | Crop | Feature Set | Clinical Data | Status | Test AUROC | Test AP | Test Bal Acc | Output |
 |---:|---|---|---|---|---|---:|---:|---:|---|
 | 0 | Clinical variables | N/A | Clinical-only | Yes | Done | 0.735 | 0.502 | 0.642 | `Benchmarking/outputs/probes/clinical_logreg` |

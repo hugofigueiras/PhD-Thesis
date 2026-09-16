@@ -23,6 +23,8 @@ local caches, and original DICOM/source-data mirrors are intentionally excluded.
   `clinical_and_imaging_info_active_reconstructed.csv`, with 58 public columns.
 - First-pass foundation-model pCR benchmark underway using frozen encoders,
   patient-level embedding aggregation, and L2 logistic-regression probes.
+- Current benchmark matrix: 73 completed probe runs, including clinical-only,
+  image-only, and image-plus-clinical experiments.
 - Current benchmark snapshot date: 2026-09-15.
 
 ## Repository Layout
@@ -91,10 +93,18 @@ See [docs/reconstruction_workflow.md](docs/reconstruction_workflow.md).
 ## Foundation-Model Benchmarking
 
 The benchmark compares clinical-only, image-only, and image-plus-clinical pCR
-prediction using frozen foundation-model embeddings. The model registry is in
+prediction using frozen foundation-model embeddings. It uses the official
+MAMA-MIA train/test split, extracts one patient-level embedding per model/input,
+and then trains an L2-regularized logistic-regression probe for pCR
+classification. Clinical fusion runs concatenate the embedding with the
+leakage-safe clinical variables before fitting the same probe.
+
+The model registry is in
 [Benchmarking/foundation_model_registry.csv](Benchmarking/foundation_model_registry.csv)
 and the live experiment matrix is in
 [Benchmarking/experiment_matrix.md](Benchmarking/experiment_matrix.md).
+The full completed-run table is in
+[Benchmarking/outputs/summaries/cross_model_all_results.md](Benchmarking/outputs/summaries/cross_model_all_results.md).
 
 Benchmark preprocessing is model-specific. For example, 2D foundation models
 resize sampled slices to their required image size, while Pillar-0 resamples

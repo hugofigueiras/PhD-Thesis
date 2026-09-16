@@ -44,18 +44,11 @@ The model list lives in:
 Benchmarking/foundation_model_registry.csv
 ```
 
-It includes the foundation models from the methodology document:
-
-- Pillar-0 BreastMRI
-- MOME Breast mpMRI
-- Curia
-- MedSigLIP
-- MedImageInsight
-- BiomedCLIP
-- RadImageNet
-- RadioDINO
-- RadFM
-- Jolia
+It includes the foundation models from the methodology document, with the
+training modality, training scale, disease/task context, access status, and
+current benchmark status for each model. Tracked models are Pillar-0 BreastMRI,
+MOME Breast mpMRI, Curia, MedSigLIP, MedImageInsight, BiomedCLIP, RadImageNet,
+RadioDINO, RadFM, and Jolia.
 
 ## Benchmark Ladder
 
@@ -64,6 +57,16 @@ The live experiment checklist lives in:
 ```text
 Benchmarking/experiment_matrix.md
 ```
+
+The complete exported result table for completed runs lives in:
+
+```text
+Benchmarking/outputs/summaries/cross_model_all_results.md
+Benchmarking/outputs/summaries/cross_model_first_pass_comparison.csv
+```
+
+Current snapshot: 73 completed probe runs, consisting of 1 clinical-only run,
+56 image-only embedding runs, and 16 image-plus-clinical runs.
 
 Run this order once embedding extraction scripts exist:
 
@@ -85,7 +88,8 @@ belong after the baseline foundation-model embedding benchmark is stable.
 All first-pass probes use:
 
 ```text
-frozen representation or clinical variables
+official MAMA-MIA train/test split
+  -> frozen foundation-model embeddings and/or clinical variables
   -> train-only standardization / imputation
   -> L2-regularized logistic regression
   -> pCR probability
@@ -96,6 +100,11 @@ probe creates a stratified validation split only from official training patients
 selects `C` by validation average precision, chooses a classification threshold
 by validation balanced accuracy, then fits the final probe on all official
 training patients before evaluating the official test patients.
+
+For image-only and image-plus-clinical runs, the foundation model is used only
+as a frozen feature extractor. Each extraction produces one patient-level
+embedding row. The logistic probe then classifies pCR from either that embedding
+alone or the embedding concatenated with the leakage-safe clinical variables.
 
 Run the clinical-only baseline:
 
