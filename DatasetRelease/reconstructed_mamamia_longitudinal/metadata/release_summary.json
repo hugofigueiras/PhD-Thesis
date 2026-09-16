@@ -1,0 +1,57 @@
+{
+  "active_exams_by_dataset": {
+    "ISPY1": 549,
+    "ISPY2": 2680,
+    "NACT": 189
+  },
+  "active_exams_total": 3418,
+  "active_patients_by_dataset": {
+    "ISPY1": 145,
+    "ISPY2": 716,
+    "NACT": 64
+  },
+  "active_patients_total": 925,
+  "active_phase_files_by_dataset": {
+    "ISPY1": 1705,
+    "ISPY2": 19159,
+    "NACT": 588
+  },
+  "active_phase_files_total": 21452,
+  "exam_phase_count_distribution": {
+    "1": 2,
+    "10": 8,
+    "11": 2,
+    "2": 3,
+    "3": 671,
+    "4": 60,
+    "5": 21,
+    "6": 595,
+    "7": 1186,
+    "8": 718,
+    "9": 152
+  },
+  "files_written": {
+    "clinical_active": "DatasetRelease/reconstructed_mamamia_longitudinal/metadata/clinical_and_imaging_info_active_reconstructed.csv",
+    "clinical_nonreleased": "DatasetRelease/reconstructed_mamamia_longitudinal/metadata/clinical_and_imaging_info_nonreleased.csv",
+    "clinical_status": "DatasetRelease/reconstructed_mamamia_longitudinal/metadata/clinical_and_imaging_info_with_reconstruction_status.csv",
+    "clinical_workbook": "DatasetRelease/reconstructed_mamamia_longitudinal/metadata/clinical_and_imaging_info_active_reconstructed.xlsx",
+    "data_dictionary": "DatasetRelease/reconstructed_mamamia_longitudinal/metadata/data_dictionary.csv",
+    "exam_manifest": "DatasetRelease/reconstructed_mamamia_longitudinal/metadata/exam_manifest.csv",
+    "patient_manifest": "DatasetRelease/reconstructed_mamamia_longitudinal/metadata/patient_manifest.csv",
+    "phase_manifest": "DatasetRelease/reconstructed_mamamia_longitudinal/metadata/phase_manifest.csv",
+    "quarantine_manifest": "DatasetRelease/reconstructed_mamamia_longitudinal/metadata/quarantine_manifest.csv",
+    "summary": "DatasetRelease/reconstructed_mamamia_longitudinal/metadata/release_summary.json"
+  },
+  "generated_at": "2026-09-15T16:38:14+01:00",
+  "mamamia_clinical": "Original_Datasets/MAMA-MIA/clinical_and_imaging_info.xlsx",
+  "mamamia_release_status_counts": {
+    "active_reconstructed": 925,
+    "no_active_reconstructed_volume": 278,
+    "not_reconstructed_source_dataset": 291,
+    "quarantined": 12
+  },
+  "output_root": "DatasetRelease/reconstructed_mamamia_longitudinal",
+  "project_root": ".",
+  "quarantined_patients_total": 12,
+  "reconstructed_root": "Reconstructed_Datasets"
+}

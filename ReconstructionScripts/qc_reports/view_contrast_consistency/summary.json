@@ -1,0 +1,35 @@
+{
+  "contrast_matches_anchor_counts": {
+    "True": 3232,
+    "missing": 186
+  },
+  "exam_rows": 3418,
+  "include_inactive": false,
+  "nifti_header_view_counts": {
+    "axial": 2680,
+    "sagittal": 738
+  },
+  "nifti_header_view_matches_anchor_counts": {
+    "True": 3418
+  },
+  "patient_rows": 925,
+  "patients_with_any_mismatch": 108,
+  "reconstruction_audit_csv": "./ReconstructionScripts/qc_reports/reconstruction_consistency_audit/reconstructed_exam_audit.csv",
+  "source_contrast_counts": {
+    "missing": 186,
+    "t1_like": 3232
+  },
+  "source_plane_counts": {
+    "axial": 2606,
+    "missing": 186,
+    "sagittal": 626
+  },
+  "status_counts": {
+    "no_selected_source_series": 186,
+    "ok": 3232
+  },
+  "view_matches_anchor_counts": {
+    "True": 3232,
+    "missing": 186
+  }
+}

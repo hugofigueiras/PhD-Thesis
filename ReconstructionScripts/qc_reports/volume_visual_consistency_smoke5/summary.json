@@ -1,0 +1,29 @@
+{
+  "exam_rows": 20,
+  "max_patients": 5,
+  "nifti_header_view_counts": {
+    "sagittal": 20
+  },
+  "nifti_header_view_matches_reference_counts": {
+    "True": 20
+  },
+  "patient_rows": 5,
+  "patients_with_review_recommended": 0,
+  "phase_count_matches_reference_counts": {
+    "False": 1,
+    "True": 19
+  },
+  "phase_index": 0,
+  "projection_size": 96,
+  "reconstruction_audit_csv": "./ReconstructionScripts/qc_reports/reconstruction_consistency_audit/reconstructed_exam_audit.csv",
+  "reference_kind_counts": {
+    "active_anchor": 20
+  },
+  "review_reason_counts": {},
+  "review_recommended_exam_rows": 0,
+  "status_counts": {
+    "ok": 15,
+    "reference_exam": 5
+  },
+  "target_shape": "64,64,32"
+}

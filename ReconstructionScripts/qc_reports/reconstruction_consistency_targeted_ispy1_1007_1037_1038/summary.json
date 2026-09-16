@@ -1,0 +1,36 @@
+{
+  "anchor_compare_status_counts": {
+    "missing_reconstructed_phase": 8,
+    "same_shape_spacing_affine_diff": 3
+  },
+  "anchor_phase_rows": 11,
+  "anchor_pixel_compare_status_counts": {},
+  "candidate_audit": "selected",
+  "candidate_phase_counts": false,
+  "candidate_rows": 20,
+  "compare_anchor_pixels": false,
+  "datasets": [
+    "ISPY1"
+  ],
+  "deep_dicom_phase_check": false,
+  "exam_rows": 5,
+  "include_metadata_only_exams": false,
+  "mamamia_root": "data/MAMA-MIA",
+  "manual_phase_manifest_dir": "./ReconstructionScripts/manual_overrides",
+  "manual_phase_manifests_loaded": 1,
+  "notes": [
+    "ok means the selected source metadata, reconstructed phase count, phase headers, and view checks passed for the checks enabled.",
+    "Anchor pixel equivalence is checked only when --compare-anchor-pixels is used.",
+    "Extra-timepoint correctness is based on re-selecting source series from metadata/DICOM headers using the reconstruction rules and flagging low-confidence or ambiguous choices.",
+    "Shape differences versus MAMA-MIA may reflect MAMA-MIA preprocessing, but they must be documented before using reconstructed anchors interchangeably.",
+    "Use --include-metadata-only-exams when you also want to find original exams that were not reconstructed."
+  ],
+  "patients_audited": 3,
+  "reconstructed_root": "./Reconstructed_Datasets",
+  "risk_status_counts": {
+    "duplicate_reconstructed_volume|phase_count_mismatch_vs_selected_dicom|phase_header_mismatch_vs_selected_dicom|view_mismatch_vs_mamamia:sagittal": 1,
+    "ok": 2,
+    "reconstruction_quarantined_not_active": 2
+  },
+  "timepoints": "all"
+}

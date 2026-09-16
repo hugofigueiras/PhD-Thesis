@@ -1,0 +1,8 @@
+file,grain,description
+patient_manifest.csv,one row per active reconstructed patient,"Active patient-level image inventory with reconstructed folder IDs, exam counts, phase counts, and patient-level QC summaries when available."
+exam_manifest.csv,one row per active reconstructed exam/timepoint,"Exam-level inventory with relative paths, phase indices, and selected reconstruction audit fields."
+phase_manifest.csv,one row per NIfTI phase file,Phase-level path list for all active reconstructed volume_phase*.nii.gz files.
+quarantine_manifest.csv,one row per quarantined patient per quarantine case,Patients intentionally excluded from the active release with quarantine reason and flagged exam dates.
+clinical_and_imaging_info_active_reconstructed.csv,one row per active reconstructed patient,"MAMA-MIA dataset_info rows filtered to active reconstructed patients, with release status and path summary columns added."
+clinical_and_imaging_info_with_reconstruction_status.csv,one row per original MAMA-MIA patient,Full MAMA-MIA dataset_info sheet with reconstructed_release_status added for auditability.
+clinical_and_imaging_info_nonreleased.csv,one row per MAMA-MIA patient not in the active reconstructed release,"Rows excluded because they are quarantined, source patients without active reconstructed folders, or DUKE patients outside this reconstructed cohort."

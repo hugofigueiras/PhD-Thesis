@@ -1,0 +1,97 @@
+{
+  "benchmark_status_counts": {
+    "usable": 8
+  },
+  "clinical_feature_policy": {
+    "allowed_baseline_columns": [
+      "age",
+      "menopause",
+      "er",
+      "pr",
+      "hr",
+      "her2",
+      "tumor_subtype",
+      "nottingham_grade",
+      "mammaprint",
+      "oncotype_score",
+      "bilateral_breast_cancer",
+      "multifocal_cancer",
+      "ethnicity",
+      "has_implant",
+      "bmi_group",
+      "breast_density"
+    ],
+    "discuss_before_using_columns": [
+      "nac_agent",
+      "endocrine_therapy",
+      "anti_her2_neu_therapy"
+    ],
+    "excluded_leakage_columns": [
+      "mastectomy_post_nac",
+      "days_to_follow_up",
+      "days_to_recurrence",
+      "days_to_metastasis",
+      "days_to_death"
+    ]
+  },
+  "clinical_info": "data/MAMA-MIA/clinical_and_imaging_info.xlsx",
+  "expert_roi_dataset_counts": {
+    "DUKE": 8
+  },
+  "expert_roi_mask_volume_ml": {
+    "max": 89.99250552780335,
+    "median": 10.021312174264159,
+    "min": 0.7640017344966292
+  },
+  "expert_roi_pcr_counts": {
+    "0.0": 6,
+    "1.0": 2
+  },
+  "expert_roi_split_counts": {
+    "test": 2,
+    "train": 6
+  },
+  "expert_roi_status_counts": {
+    "expert_mask_roi": 8
+  },
+  "mamamia_root": "data/MAMA-MIA",
+  "manifest": "./Benchmarking/outputs/manifests_smoke/smoke_mamamia_multiphase_foundation_manifest.csv",
+  "notes": [
+    "No image crops or subtraction images are written by this script.",
+    "Subtraction eligibility requires phase 0, phase 1, phase 2, and last phase geometry to match.",
+    "Expert ROI uses the phase-0 expert mask crop and assumes phase geometry is matched for multiphase ROI extraction.",
+    "Use frozen foundation-model embeddings first; full fine-tuning is a later experiment."
+  ],
+  "num_available_phases_counts": {
+    "4": 7,
+    "5": 1
+  },
+  "phase_geometry_status_counts": {
+    "matched": 8
+  },
+  "required_input_roles": [
+    "phase0",
+    "phase1",
+    "phase2",
+    "last_phase",
+    "phase1_minus_phase0",
+    "phase2_minus_phase0",
+    "last_phase_minus_phase0"
+  ],
+  "rows": 8,
+  "splits": "data/MAMA-MIA/train_test_splits.csv",
+  "usable_for_expert_roi_benchmark": 8,
+  "usable_for_multiphase_or_subtraction_benchmark": 8,
+  "usable_for_whole_volume_benchmark": 8,
+  "whole_volume_dataset_counts": {
+    "DUKE": 8
+  },
+  "whole_volume_pcr_counts": {
+    "0.0": 6,
+    "1.0": 2
+  },
+  "whole_volume_split_counts": {
+    "test": 2,
+    "train": 6
+  }
+}

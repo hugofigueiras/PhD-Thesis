@@ -1,0 +1,48 @@
+# Python/cache artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environments and credentials
+.venv/
+.env
+*.token
+token
+stored_tokens
+wandb/
+
+# Large medical imaging/data artifacts
+*.nii
+*.nii.gz
+*.dcm
+*.nrrd
+*.mha
+*.mhd
+*.h5
+*.hdf5
+*.npy
+*.npz
+*.pt
+*.pth
+*.ckpt
+*.joblib
+*.pkl
+
+# Generated heavy benchmark outputs
+Benchmarking/outputs/embeddings/
+Benchmarking/outputs/probes/
+Benchmarking/outputs/model_cache/
+PCRPredictionScripts/outputs/**/nnUNet_raw/
+PCRPredictionScripts/outputs/**/nnUNet_preprocessed/
+PCRPredictionScripts/outputs/**/nnUNet_results/
+ReconstructionScripts/qc_reports/**/nnUNet_raw/
+ReconstructionScripts/qc_reports/**/nnUNet_preprocessed/
+ReconstructionScripts/qc_reports/**/nnUNet_results/
+ReconstructionScripts/qc_reports/**/_weights_unpacked/
+
+# Local data mirrors
+Original_Datasets/
+Reconstructed_Datasets/
+DatasetRelease/reconstructed_mamamia_longitudinal/hf_upload_staging/
