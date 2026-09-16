@@ -70,6 +70,12 @@ combines:
 - longitudinal reconstruction/linkage metadata showing which patients have
   multiple recovered MRI exams/timepoints.
 
+The released NIfTI images are kept in their native reconstructed geometry. They
+are not globally resampled, resized, reoriented, or intensity-normalized as a
+dataset-level preprocessing step. Model-specific resizing, resampling,
+normalization, cropping, and padding are applied later on the fly inside the
+benchmark/training pipelines.
+
 See [docs/dataset.md](docs/dataset.md) for the dataset description, file tree,
 metadata column groups, and citations.
 
@@ -89,6 +95,11 @@ prediction using frozen foundation-model embeddings. The model registry is in
 [Benchmarking/foundation_model_registry.csv](Benchmarking/foundation_model_registry.csv)
 and the live experiment matrix is in
 [Benchmarking/experiment_matrix.md](Benchmarking/experiment_matrix.md).
+
+Benchmark preprocessing is model-specific. For example, 2D foundation models
+resize sampled slices to their required image size, while Pillar-0 resamples
+3D inputs to isotropic spacing before center pad/crop. These operations do not
+modify the released dataset files.
 
 Headline first-pass results so far:
 

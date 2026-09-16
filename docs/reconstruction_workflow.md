@@ -72,6 +72,23 @@ DatasetRelease/reconstructed_mamamia_longitudinal/
 
 Quarantined patients are not included in the active public release.
 
+## Image Geometry Policy
+
+The reconstruction workflow preserves native image geometry rather than forcing
+all exams onto a shared preprocessing grid. During DICOM-to-NIfTI conversion,
+the scripts build image volumes from the selected DICOM slices and store
+DICOM-derived spacing, origin, and direction in the NIfTI header.
+
+The release package therefore contains heterogeneous image sizes, voxel
+spacings, and acquisition planes. This is expected because the source cohorts
+come from different sites, scanners, protocols, and timepoints. QC verifies that
+phases within each reconstructed exam are internally consistent, but it does not
+globally resample all exams to one resolution or orientation.
+
+Any resizing, resampling, normalization, cropping, or padding described in the
+benchmark scripts is applied later for model input preparation and is not a
+dataset-level preprocessing step.
+
 ## Hugging Face Upload Preparation
 
 The Hugging Face staging folder is produced by:

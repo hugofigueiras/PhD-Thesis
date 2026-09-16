@@ -36,6 +36,26 @@ Primary metrics:
 - average precision;
 - balanced accuracy.
 
+## Image Preprocessing Scope
+
+The benchmark scripts perform model-specific preprocessing on the fly. This is
+separate from the released dataset, whose NIfTI files remain in native
+reconstructed geometry.
+
+Examples:
+
+- 2D foundation models sample slices from the source volumes, apply percentile
+  clipping/min-max normalization, repeat grayscale slices to RGB, and resize to
+  the model image size.
+- Pillar-0 loads 3D phase volumes, optionally resamples to isotropic spacing,
+  applies percentile clipping/min-max normalization, and center pads/crops to
+  the model input shape.
+- PCR classifier experiments load source NIfTI volumes, normalize crops, and
+  resize/pad tensors during training.
+
+These operations produce embeddings or tensors for a model run; they are not
+written back into the public dataset release.
+
 ## Model Registry
 
 The full live model table is stored in:

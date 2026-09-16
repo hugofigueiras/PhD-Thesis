@@ -35,6 +35,35 @@ data contained additional exams.
   4 exams/timepoints.
 - DCE phase files per exam: 1-11
 
+## Image Geometry And Preprocessing
+
+The released NIfTI files are stored in their native reconstructed geometry. The
+dataset release does **not** apply a single global preprocessing grid, such as a
+shared voxel spacing, matrix size, orientation, or intensity normalization.
+
+The reconstruction scripts convert DICOM phase stacks to NIfTI and preserve the
+DICOM-derived spacing, origin, and direction in the image header. QC then checks
+that phases within the same exam are geometrically consistent and excludes
+quarantined cases from the active release.
+
+Current active-release geometry summary:
+
+| Property | Value |
+|---|---:|
+| Unique reconstructed shapes | 130 |
+| Unique reconstructed voxel spacings | 287 |
+| Axial exams/timepoints | 2680 |
+| Sagittal exams/timepoints | 738 |
+| Exams with phase-consistent shape | 3418 / 3418 |
+| Exams with phase-consistent spacing | 3418 / 3418 |
+| Exams with phase-consistent affine | 3418 / 3418 |
+
+Model-specific preprocessing is applied later inside benchmark/training
+pipelines. For example, 2D foundation-model extraction normalizes and resizes
+sampled slices on the fly, and the Pillar-0 3D extraction pipeline resamples,
+normalizes, and center pads/crops inputs before model inference. Those operations
+do not overwrite or modify the released NIfTI files.
+
 ## Dataset Organization
 
 ```text
