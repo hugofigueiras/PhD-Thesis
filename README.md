@@ -38,6 +38,8 @@ local caches, and original DICOM/source-data mirrors are intentionally excluded.
 |   |-- benchmarking.md
 |   |-- benchmark_results.md
 |   `-- repository_contents.md
+|-- presentations/
+|   `-- advisor_update_2026-09-16.md
 |-- DatasetRelease/
 |   `-- reconstructed_mamamia_longitudinal/
 |       |-- README.md
@@ -80,6 +82,11 @@ benchmark/training pipelines.
 
 See [docs/dataset.md](docs/dataset.md) for the dataset description, file tree,
 metadata column groups, and citations.
+
+## Advisor Update Deck
+
+A Markdown slide deck for the current project update is available at
+[presentations/advisor_update_2026-09-16.md](presentations/advisor_update_2026-09-16.md).
 
 ## Reconstruction
 
