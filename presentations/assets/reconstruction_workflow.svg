@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="610" viewBox="0 0 1500 610" role="img" aria-labelledby="title desc">
+  <title id="title">Dataset reconstruction workflow</title>
+  <desc id="desc">Flowchart showing MAMA-MIA metadata and original TCIA metadata matched by TCIA series UID, followed by DICOM matching, timepoint recovery, NIfTI reconstruction, QC, and release or quarantine.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-20%" width="120%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.16"/>
+    </filter>
+    <style>
+      .bg { fill: #f8fafc; }
+      .box { fill: #ffffff; stroke: #334155; stroke-width: 2.5; rx: 14; filter: url(#shadow); }
+      .source { fill: #eef6ff; stroke: #2563eb; }
+      .process { fill: #ffffff; stroke: #334155; }
+      .qc { fill: #fff7ed; stroke: #ea580c; }
+      .ok { fill: #ecfdf5; stroke: #059669; }
+      .bad { fill: #fef2f2; stroke: #dc2626; }
+      .text { font-family: Inter, Arial, sans-serif; font-size: 24px; font-weight: 650; fill: #0f172a; text-anchor: middle; }
+      .sub { font-family: Inter, Arial, sans-serif; font-size: 18px; font-weight: 450; fill: #475569; text-anchor: middle; }
+      .arrow { stroke: #334155; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .label { font-family: Inter, Arial, sans-serif; font-size: 18px; font-weight: 650; fill: #334155; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1500" height="610"/>
+
+  <rect class="box source" x="45" y="95" width="245" height="110"/>
+  <text class="text" x="167.5" y="137">MAMA-MIA</text>
+  <text class="sub" x="167.5" y="166">clinical metadata</text>
+  <text class="sub" x="167.5" y="190">series UID</text>
+
+  <rect class="box source" x="45" y="320" width="245" height="120"/>
+  <text class="text" x="167.5" y="363">Original TCIA</text>
+  <text class="sub" x="167.5" y="392">ISPY1 / ISPY2 / NACT</text>
+  <text class="sub" x="167.5" y="416">metadata + DICOMs</text>
+
+  <rect class="box process" x="355" y="205" width="215" height="120"/>
+  <text class="text" x="462.5" y="252">Match by</text>
+  <text class="text" x="462.5" y="282">TCIA UID</text>
+
+  <rect class="box process" x="635" y="205" width="220" height="120"/>
+  <text class="text" x="745" y="250">Find source</text>
+  <text class="text" x="745" y="280">DICOM series</text>
+
+  <rect class="box process" x="920" y="205" width="220" height="120"/>
+  <text class="text" x="1030" y="246">Recover</text>
+  <text class="text" x="1030" y="276">timepoints</text>
+
+  <rect class="box process" x="1205" y="205" width="240" height="120"/>
+  <text class="text" x="1325" y="246">Reconstruct</text>
+  <text class="text" x="1325" y="276">DCE NIfTI</text>
+
+  <rect class="box qc" x="635" y="425" width="220" height="110"/>
+  <text class="text" x="745" y="471">QC checks</text>
+  <text class="sub" x="745" y="501">geometry + visual</text>
+
+  <rect class="box ok" x="920" y="425" width="220" height="110"/>
+  <text class="text" x="1030" y="471">Active public</text>
+  <text class="text" x="1030" y="501">release</text>
+
+  <rect class="box bad" x="1205" y="425" width="240" height="110"/>
+  <text class="text" x="1325" y="471">Quarantine</text>
+  <text class="sub" x="1325" y="501">exclude from release</text>
+
+  <path class="arrow" d="M 290 150 C 325 150, 325 245, 355 245"/>
+  <path class="arrow" d="M 290 380 C 325 380, 325 285, 355 285"/>
+  <path class="arrow" d="M 570 265 L 635 265"/>
+  <path class="arrow" d="M 855 265 L 920 265"/>
+  <path class="arrow" d="M 1140 265 L 1205 265"/>
+  <path class="arrow" d="M 1325 325 C 1325 380, 745 365, 745 425"/>
+  <path class="arrow" d="M 855 480 L 920 480"/>
+  <path class="arrow" d="M 1140 480 L 1205 480"/>
+
+  <text class="label" x="888" y="404">pass</text>
+  <text class="label" x="1172" y="404">fail</text>
+</svg>

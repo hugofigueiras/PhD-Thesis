@@ -82,19 +82,7 @@ The reconstructed release excludes QC-quarantined patients from the active publi
 
 # Reconstruction Workflow
 
-```mermaid
-flowchart LR
-    A[MAMA-MIA metadata<br/>clinical_and_imaging_info.xlsx] --> B[Use TCIA series UID]
-    C[Original TCIA metadata<br/>ISPY1 / ISPY2 / NACT] --> B
-    B --> D[Match source DICOM series]
-    D --> E[Identify anchor exam/timepoint]
-    E --> F[Recover remaining source timepoints]
-    F --> G[Reconstruct DCE phase volumes<br/>DICOM to NIfTI]
-    G --> H[QC checks]
-    H --> I{Pass QC?}
-    I -->|Yes| J[Active public release]
-    I -->|No| K[Quarantine / exclude]
-```
+![Dataset reconstruction workflow](assets/reconstruction_workflow.svg)
 
 ---
 
@@ -260,19 +248,7 @@ Three benchmark settings:
 
 # Benchmarking Pipeline
 
-```mermaid
-flowchart LR
-    A[Official MAMA-MIA split] --> B[Benchmark manifest]
-    B --> C[Select image input<br/>phase / subtraction / fusion / ROI]
-    C --> D[Model-specific preprocessing]
-    D --> E[Frozen foundation model]
-    E --> F[Patient-level embedding]
-    F --> G[L2 logistic regression]
-    H[Clinical variables] --> I[Train-only imputation<br/>and standardization]
-    I --> G
-    G --> J[pCR probability]
-    J --> K[Evaluate on official test set]
-```
+![Foundation-model benchmarking pipeline](assets/benchmarking_pipeline.svg)
 
 Key point: the official test split is used only for final evaluation.
 
