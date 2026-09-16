@@ -254,6 +254,28 @@ Key point: the official test split is used only for final evaluation.
 
 ---
 
+# How Image Fusion Is Done
+
+![w:1050 Image fusion strategy](assets/fusion_strategy.svg)
+
+- 2D foundation models: fusion happens **after** the frozen model by concatenating patient embeddings.
+- Pillar-0: fusion happens **before** the frozen model by stacking 3D DCE volumes as channels.
+
+---
+
+# Fusion Inputs
+
+| Fusion type | What is sent through the foundation model? | What is fused? |
+|---|---|---|
+| Single phase | One phase volume, sampled as 2D slices for 2D models | Slice embeddings averaged to one patient vector |
+| Subtraction | `phase1 - phase0`, `phase2 - phase0`, or `last - phase0` | Subtraction-volume slice embeddings |
+| Raw phase fusion | Separate phase embeddings for phase 0, phase 1, phase 2, and last phase | Patient embeddings concatenated |
+| Subtraction fusion | Separate subtraction embeddings | Patient embeddings concatenated |
+| All DCE fusion | Raw phase embeddings plus subtraction embeddings | Patient embeddings concatenated |
+| Pillar-0 3D fusion | 3D phase triplet or subtraction triplet as channels | Channels fused inside the 3D encoder |
+
+---
+
 # Leakage-Safe Probe Protocol
 
 All first-pass probes use the same classifier:

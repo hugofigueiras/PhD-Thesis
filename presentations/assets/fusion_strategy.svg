@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="720" viewBox="0 0 1500 720" role="img" aria-labelledby="title desc">
+  <title id="title">Image fusion strategies for foundation-model benchmarking</title>
+  <desc id="desc">Diagram comparing late embedding fusion for 2D foundation models with early 3D channel fusion for Pillar-0 BreastMRI.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-20%" width="120%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.14"/>
+    </filter>
+    <style>
+      .bg { fill: #f8fafc; }
+      .lane { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 20; }
+      .box { fill: #ffffff; stroke: #334155; stroke-width: 2.4; rx: 14; filter: url(#shadow); }
+      .phase { fill: #eef6ff; stroke: #2563eb; }
+      .model { fill: #f5f3ff; stroke: #7c3aed; }
+      .fusion { fill: #fff7ed; stroke: #ea580c; }
+      .probe { fill: #ecfdf5; stroke: #059669; }
+      .title { font-family: Inter, Arial, sans-serif; font-size: 30px; font-weight: 750; fill: #0f172a; text-anchor: middle; }
+      .laneTitle { font-family: Inter, Arial, sans-serif; font-size: 25px; font-weight: 750; fill: #0f172a; }
+      .text { font-family: Inter, Arial, sans-serif; font-size: 21px; font-weight: 650; fill: #0f172a; text-anchor: middle; }
+      .sub { font-family: Inter, Arial, sans-serif; font-size: 17px; font-weight: 450; fill: #475569; text-anchor: middle; }
+      .note { font-family: Inter, Arial, sans-serif; font-size: 18px; font-weight: 550; fill: #334155; text-anchor: middle; }
+      .arrow { stroke: #334155; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1500" height="720"/>
+  <text class="title" x="750" y="48">How DCE-MRI Inputs Are Fused</text>
+
+  <rect class="lane" x="45" y="80" width="1410" height="285"/>
+  <text class="laneTitle" x="80" y="125">2D foundation models: late embedding fusion</text>
+  <text class="note" x="840" y="125">Curia, MedSigLIP, BiomedCLIP, RadioDINO</text>
+
+  <rect class="box phase" x="95" y="170" width="175" height="90"/>
+  <text class="text" x="182.5" y="205">Phase 0</text>
+  <text class="sub" x="182.5" y="233">or ROI crop</text>
+
+  <rect class="box phase" x="95" y="275" width="175" height="70"/>
+  <text class="text" x="182.5" y="318">Phase 1 / 2 / last</text>
+
+  <rect class="box phase" x="330" y="205" width="190" height="100"/>
+  <text class="text" x="425" y="242">Optional</text>
+  <text class="text" x="425" y="272">subtraction</text>
+  <text class="sub" x="425" y="295">post - phase 0</text>
+
+  <rect class="box model" x="585" y="205" width="210" height="100"/>
+  <text class="text" x="690" y="242">Sample 2D slices</text>
+  <text class="sub" x="690" y="272">normalize + resize</text>
+  <text class="sub" x="690" y="295">encode each slice</text>
+
+  <rect class="box model" x="855" y="205" width="210" height="100"/>
+  <text class="text" x="960" y="242">Aggregate</text>
+  <text class="text" x="960" y="272">slices</text>
+  <text class="sub" x="960" y="295">mean embedding</text>
+
+  <rect class="box fusion" x="1125" y="205" width="250" height="100"/>
+  <text class="text" x="1250" y="237">Concatenate</text>
+  <text class="text" x="1250" y="267">patient embeddings</text>
+  <text class="sub" x="1250" y="292">raw phases / subtractions / all</text>
+
+  <path class="arrow" d="M 270 215 L 330 238"/>
+  <path class="arrow" d="M 270 310 L 330 272"/>
+  <path class="arrow" d="M 520 255 L 585 255"/>
+  <path class="arrow" d="M 795 255 L 855 255"/>
+  <path class="arrow" d="M 1065 255 L 1125 255"/>
+
+  <rect class="lane" x="45" y="405" width="1410" height="250"/>
+  <text class="laneTitle" x="80" y="450">Pillar-0 BreastMRI: early 3D channel fusion</text>
+  <text class="note" x="855" y="450">3D model receives a multi-channel volume before embedding</text>
+
+  <rect class="box phase" x="115" y="505" width="235" height="95"/>
+  <text class="text" x="232.5" y="540">3D channel stack</text>
+  <text class="sub" x="232.5" y="570">phase0, phase1, last</text>
+  <text class="sub" x="232.5" y="593">or subtraction triplet</text>
+
+  <rect class="box model" x="430" y="505" width="235" height="95"/>
+  <text class="text" x="547.5" y="540">3D preprocessing</text>
+  <text class="sub" x="547.5" y="570">resample, normalize,</text>
+  <text class="sub" x="547.5" y="593">center crop/pad</text>
+
+  <rect class="box model" x="745" y="505" width="235" height="95"/>
+  <text class="text" x="862.5" y="540">Pillar-0</text>
+  <text class="text" x="862.5" y="570">3D encoder</text>
+
+  <rect class="box fusion" x="1060" y="505" width="235" height="95"/>
+  <text class="text" x="1177.5" y="540">One patient-level</text>
+  <text class="text" x="1177.5" y="570">embedding</text>
+
+  <rect class="box probe" x="1325" y="505" width="100" height="95"/>
+  <text class="text" x="1375" y="543">Log</text>
+  <text class="text" x="1375" y="573">Reg</text>
+
+  <path class="arrow" d="M 350 552 L 430 552"/>
+  <path class="arrow" d="M 665 552 L 745 552"/>
+  <path class="arrow" d="M 980 552 L 1060 552"/>
+  <path class="arrow" d="M 1295 552 L 1325 552"/>
+</svg>
