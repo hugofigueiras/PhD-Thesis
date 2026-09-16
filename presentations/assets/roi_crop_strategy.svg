@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="640" viewBox="0 0 1500 640" role="img" aria-labelledby="title desc">
+  <title id="title">Expert ROI crop construction for foundation-model benchmarking</title>
+  <desc id="desc">Diagram showing phase 0 image and expert tumor mask used to compute a bounding box, add a physical margin, clip to image bounds, store crop coordinates, and apply the same crop to all phases and subtraction inputs.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-20%" width="120%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.14"/>
+    </filter>
+    <style>
+      .bg { fill: #f8fafc; }
+      .box { fill: #ffffff; stroke: #334155; stroke-width: 2.4; rx: 14; filter: url(#shadow); }
+      .image { fill: #eef6ff; stroke: #2563eb; }
+      .mask { fill: #fef2f2; stroke: #dc2626; }
+      .roi { fill: #fff7ed; stroke: #ea580c; }
+      .manifest { fill: #f5f3ff; stroke: #7c3aed; }
+      .model { fill: #ecfdf5; stroke: #059669; }
+      .title { font-family: Inter, Arial, sans-serif; font-size: 30px; font-weight: 750; fill: #0f172a; text-anchor: middle; }
+      .text { font-family: Inter, Arial, sans-serif; font-size: 22px; font-weight: 650; fill: #0f172a; text-anchor: middle; }
+      .sub { font-family: Inter, Arial, sans-serif; font-size: 17px; font-weight: 450; fill: #475569; text-anchor: middle; }
+      .note { font-family: Inter, Arial, sans-serif; font-size: 18px; font-weight: 600; fill: #334155; text-anchor: middle; }
+      .arrow { stroke: #334155; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1500" height="640"/>
+  <text class="title" x="750" y="52">How Expert ROI Crops Are Built</text>
+
+  <rect class="box image" x="70" y="120" width="230" height="115"/>
+  <text class="text" x="185" y="162">Phase 0 image</text>
+  <text class="sub" x="185" y="194">MAMA-MIA DCE MRI</text>
+  <text class="sub" x="185" y="218">reference geometry</text>
+
+  <rect class="box mask" x="70" y="285" width="230" height="115"/>
+  <text class="text" x="185" y="327">Expert mask</text>
+  <text class="sub" x="185" y="359">nonzero tumor voxels</text>
+  <text class="sub" x="185" y="383">from MAMA-MIA</text>
+
+  <rect class="box roi" x="380" y="205" width="245" height="115"/>
+  <text class="text" x="502.5" y="246">Tumor bounding</text>
+  <text class="text" x="502.5" y="276">box</text>
+  <text class="sub" x="502.5" y="301">min/max mask voxels</text>
+
+  <rect class="box roi" x="705" y="205" width="260" height="115"/>
+  <text class="text" x="835" y="244">Add physical</text>
+  <text class="text" x="835" y="274">context margin</text>
+  <text class="sub" x="835" y="300">30 x 30 x 20 mm</text>
+
+  <rect class="box roi" x="1045" y="205" width="245" height="115"/>
+  <text class="text" x="1167.5" y="246">Clip crop to</text>
+  <text class="text" x="1167.5" y="276">image bounds</text>
+  <text class="sub" x="1167.5" y="301">no crop files written</text>
+
+  <rect class="box manifest" x="380" y="430" width="300" height="115"/>
+  <text class="text" x="530" y="468">Store crop coords</text>
+  <text class="sub" x="530" y="499">expert_roi_crop_clipped</text>
+  <text class="sub" x="530" y="522">start/end x, y, z</text>
+
+  <rect class="box model" x="760" y="430" width="300" height="115"/>
+  <text class="text" x="910" y="468">Apply same crop</text>
+  <text class="sub" x="910" y="499">phase 0, 1, 2, last</text>
+  <text class="sub" x="910" y="522">and subtractions</text>
+
+  <rect class="box model" x="1140" y="430" width="285" height="115"/>
+  <text class="text" x="1282.5" y="468">Send ROI input</text>
+  <text class="sub" x="1282.5" y="499">to frozen encoder</text>
+  <text class="sub" x="1282.5" y="522">2D slices or 3D channels</text>
+
+  <path class="arrow" d="M 300 177 C 340 177, 340 244, 380 244"/>
+  <path class="arrow" d="M 300 342 C 340 342, 340 282, 380 282"/>
+  <path class="arrow" d="M 625 263 L 705 263"/>
+  <path class="arrow" d="M 965 263 L 1045 263"/>
+  <path class="arrow" d="M 1168 320 C 1168 388, 530 375, 530 430"/>
+  <path class="arrow" d="M 680 488 L 760 488"/>
+  <path class="arrow" d="M 1060 488 L 1140 488"/>
+
+  <text class="note" x="750" y="600">ROI runs use crop-mode expert_roi; whole-volume runs use the full phase volume.</text>
+</svg>

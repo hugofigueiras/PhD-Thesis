@@ -276,6 +276,17 @@ Key point: the official test split is used only for final evaluation.
 
 ---
 
+# How Expert ROI Crops Are Built
+
+![w:1080 Expert ROI crop strategy](assets/roi_crop_strategy.svg)
+
+- ROI crops are generated on the fly from the **MAMA-MIA expert mask** on phase 0.
+- The tumor bounding box is expanded by a physical margin: **30 x 30 x 20 mm**.
+- The same clipped crop coordinates are applied to phase 0, phase 1, phase 2, last phase, and subtraction inputs.
+- No cropped NIfTI files are saved; only crop coordinates are stored in the benchmark manifest.
+
+---
+
 # Leakage-Safe Probe Protocol
 
 All first-pass probes use the same classifier:
