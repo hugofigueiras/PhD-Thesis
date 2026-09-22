@@ -21,11 +21,12 @@ local caches, and original DICOM/source-data mirrors are intentionally excluded.
   DCE-MRI NIfTI phase files.
 - Public metadata table:
   `clinical_and_imaging_info_active_reconstructed.csv`, with 58 public columns.
-- First-pass foundation-model pCR benchmark underway using frozen encoders,
-  patient-level embedding aggregation, and L2 logistic-regression probes.
-- Current benchmark matrix: 73 completed probe runs, including clinical-only,
-  image-only, and image-plus-clinical experiments.
-- Current benchmark snapshot date: 2026-09-15.
+- Feasible first-pass foundation-model pCR registry screen complete using frozen
+  encoders, patient-level embeddings, and L2 logistic-regression probes.
+- Current benchmark matrix: 106 completed probe runs, including 98 primary
+  modality-matched/reference runs and 8 Jolia CT-to-MRI stress-test runs.
+- Aggregate paired-bootstrap and source-cohort robustness analyses complete.
+- Current benchmark snapshot date: 2026-09-22.
 
 ## Repository Layout
 
@@ -125,8 +126,15 @@ Headline first-pass results so far:
 | Clinical-only | Clinical baseline | Clinical variables | 0.735 | 0.502 | 0.642 | `clinical_logreg` |
 | Best image-only AUROC | Curia | Expert ROI, phase 2 - phase 0 | 0.630 | 0.434 | 0.578 | `curia_expert_roi_phase2_minus_phase0_logreg` |
 | Best image-only AP | Curia | Expert ROI, selected ROI fusion | 0.608 | 0.446 | 0.546 | `curia_expert_roi_selected_fusion_logreg` |
+| Best image-only balanced accuracy | RadImageNet | Whole volume, phase 2 - phase 0 | 0.619 | 0.396 | 0.593 | `radimagenet_whole_phase2_minus_phase0_logreg` |
 | Best image + clinical AUROC/AP | BiomedCLIP | Whole volume, phase 1 + clinical | 0.739 | 0.553 | 0.605 | `biomedclip_whole_phase1_image_clinical_logreg` |
-| Best image + clinical balanced accuracy | Curia | Expert ROI, phase 2 - phase 0 + clinical | 0.724 | 0.543 | 0.658 | `curia_expert_roi_phase2_minus_phase0_image_clinical_logreg` |
+| Best image + clinical balanced accuracy | RadImageNet | Whole volume, phase 2 - phase 0 + clinical | 0.725 | 0.510 | 0.681 | `radimagenet_whole_phase2_minus_phase0_image_clinical_logreg` |
+
+Despite those point-estimate winners, a 5,000-resample paired bootstrap found no
+primary image-plus-clinical configuration with a stable aggregate improvement
+over clinical-only. The main follow-up hypothesis is cohort-specific:
+BiomedCLIP plus clinical improves AUROC and AP within the ISPY2 test subgroup,
+but this requires source-held-out validation before a generalization claim.
 
 See [docs/benchmarking.md](docs/benchmarking.md) and
 [docs/benchmark_results.md](docs/benchmark_results.md) for the detailed

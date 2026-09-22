@@ -1,0 +1,12 @@
+torch: 2.11.0+rocm7.2
+transformers: 5.16.1
+CUDA: None
+ROCm/HIP: 7.2.26015
+accelerator available: True
+accelerator 0: AMD Radeon PRO W7900
+total memory: 45.0 GiB
+free memory: 44.9 GiB
+accelerator 1: AMD Ryzen 5 7600X 6-Core Processor
+total memory: 15.2 GiB
+free memory: 15.2 GiB
+disk free: 459.7 GiB

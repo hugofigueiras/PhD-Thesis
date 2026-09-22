@@ -21,6 +21,8 @@ MODEL_DISPLAY = {
     "biomedclip": "BiomedCLIP",
     "curia": "Curia",
     "medsiglip": "MedSigLIP",
+    "radimagenet": "RadImageNet",
+    "jolia_cross_modality": "Jolia (CT-to-MRI stress test)",
     "clinical": "Clinical baseline",
 }
 
@@ -31,6 +33,8 @@ MODEL_ORDER = {
     "biomedclip": 3,
     "curia": 4,
     "medsiglip": 5,
+    "radimagenet": 6,
+    "jolia_cross_modality": 7,
 }
 
 INPUT_LABELS = {
@@ -89,6 +93,8 @@ def parse_run_name(run_dir: str) -> dict[str, str]:
         "biomedclip",
         "curia",
         "medsiglip",
+        "radimagenet",
+        "jolia_cross_modality",
     ):
         prefix = f"{candidate}_"
         if name.startswith(prefix):
@@ -115,7 +121,14 @@ def parse_run_name(run_dir: str) -> dict[str, str]:
     else:
         raise ValueError(f"Cannot parse crop from run name: {name}")
 
-    if has_clinical:
+    if model_key == "jolia_cross_modality":
+        feature_set = (
+            "Cross-modality image + clinical"
+            if has_clinical
+            else "Cross-modality image-only"
+        )
+        benchmark_group = "Cross-modality stress test"
+    elif has_clinical:
         feature_set = "Image + clinical"
         benchmark_group = "Image + clinical"
     elif "fusion" in input_key:
@@ -125,11 +138,15 @@ def parse_run_name(run_dir: str) -> dict[str, str]:
         feature_set = "Image-only"
         benchmark_group = "Image-only"
 
+    input_label = INPUT_LABELS.get(input_key, input_key)
+    if input_key == "selected_fusion" and crop == "Whole volume":
+        input_label = "Selected phase fusion"
+
     return {
         "model_key": model_key,
         "model": MODEL_DISPLAY[model_key],
         "input_key": input_key,
-        "input": INPUT_LABELS.get(input_key, input_key),
+        "input": input_label,
         "crop": crop,
         "feature_set": feature_set,
         "clinical_data": "Yes" if has_clinical else "No",
@@ -152,6 +169,7 @@ def ordered_comparison(comparison: pd.DataFrame) -> pd.DataFrame:
         "Clinical-only": 0,
         "Image-only": 1,
         "Image + clinical": 2,
+        "Cross-modality stress test": 3,
     }
     crop_order = {
         "N/A": 0,
@@ -256,6 +274,7 @@ def primary_best_table(
         "biomedclip",
         "curia",
         "medsiglip",
+        "radimagenet",
     ):
         model_df = scoped[scoped["model_key"] == model_key]
         if model_df.empty:
@@ -532,7 +551,12 @@ def make_all_results_markdown(comparison: pd.DataFrame) -> str:
         "headline standardized subset. Use it as the appendix/source table for the",
         "foundation-model benchmark.",
     ]
-    for group in ("Clinical-only", "Image-only", "Image + clinical"):
+    for group in (
+        "Clinical-only",
+        "Image-only",
+        "Image + clinical",
+        "Cross-modality stress test",
+    ):
         group_frame = comparison[comparison["benchmark_group"] == group]
         if group_frame.empty:
             continue

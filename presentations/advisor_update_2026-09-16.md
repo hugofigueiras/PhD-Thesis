@@ -1,6 +1,6 @@
 ---
 marp: true
-title: PhD Project Update
+title: PhD Project Update - 2026-09-22
 paginate: true
 ---
 
@@ -8,12 +8,14 @@ paginate: true
 
 ## Longitudinal multimodal breast MRI pCR prediction
 
+**Benchmark snapshot: 22 September 2026**
+
 **Meeting focus**
 
 - Reconstructed longitudinal dataset
 - Hugging Face and GitHub release status
-- Foundation-model benchmarking plan and current results
-- Next steps
+- Completed foundation-model benchmark and uncertainty analysis
+- Scientific interpretation and next experiments
 
 **Links**
 
@@ -26,8 +28,9 @@ paginate: true
 
 - Reconstructed MAMA-MIA-derived longitudinal DCE-MRI dataset uploaded to Hugging Face.
 - GitHub repository created for reconstruction code, documentation, benchmark scripts, model registry, and current results.
-- First-pass foundation-model benchmark is underway.
-- Current benchmark snapshot: **73 completed probe runs**.
+- Feasible first-pass foundation-model registry screen is complete.
+- Current benchmark snapshot: **106 completed probe runs**.
+- Aggregate paired-bootstrap and source-cohort robustness analyses are complete.
 
 | Output | Location |
 |---|---|
@@ -250,7 +253,9 @@ Three benchmark settings:
 
 ![Foundation-model benchmarking pipeline](assets/benchmarking_pipeline.svg)
 
-Key point: the official test split is used only for final evaluation.
+Within each run, hyperparameters and the decision threshold are selected using
+training data only. Cross-run winner selection is exploratory because many
+configurations were compared on the same official test set.
 
 ---
 
@@ -306,86 +311,202 @@ Model selection:
 - refit final probe on all official training patients;
 - evaluate once on official MAMA-MIA test patients.
 
+**Important:** this is leakage-safe within each run, but the final shortlist and
+headline winners are test-informed. Their confidence intervals are descriptive,
+not confirmatory.
+
 ---
 
 # Benchmark Experiment Matrix
 
-Current snapshot: **73 completed probe runs**.
+Snapshot date: **2026-09-22**.
 
 | Category | Completed runs |
 |---|---:|
 | Clinical-only probes | 1 |
-| Image-only embedding probes | 56 |
-| Image-plus-clinical probes | 16 |
-| **Total** | **73** |
+| Image-only embedding probes | 77 |
+| Image-plus-clinical probes | 28 |
+| **Total** | **106** |
 
-Main dimensions:
+Of these, **98** are primary modality-matched/reference runs and **8** are the
+separate Jolia CT-to-MRI stress test.
 
-- foundation model;
-- whole volume vs expert ROI;
-- DCE phase, subtraction, or fusion input;
-- clinical-only, image-only, or image-plus-clinical feature set.
+All completed runs use the same official split, frozen encoders, patient-level
+features, and L2 logistic-regression probe protocol.
 
 ---
 
-# Models Tracked
+# Registry Coverage
 
-| Model | Why it is included | Current status |
+| Model | Role | Final status |
 |---|---|---|
-| Pillar-0 BreastMRI | 3D breast MRI foundation model | Whole-volume image-only done; ROI pending |
-| Curia | CT/MRI 2D radiology slice encoder | First pass complete |
-| MedSigLIP | Broad 2D medical image-text encoder | First pass complete |
-| BiomedCLIP | Biomedical image-text baseline | First pass complete |
-| RadioDINO | Self-supervised radiology ViT | First pass complete |
-| MOME Breast mpMRI | Breast mpMRI / pCR-related candidate | Pending weight/preprocessing verification |
-| MedImageInsight | General medical image embedding model | Pending access |
-| RadImageNet | Radiology CNN transfer baseline | Pending |
-| RadFM | 2D/3D radiology VLM candidate | Heavy stage-2 candidate |
-| Jolia | CT-only control model | Optional cross-modality stress test |
+| Pillar-0 BreastMRI | Native 3D breast MRI | Complete |
+| RadioDINO | Self-supervised radiology ViT | Complete |
+| BiomedCLIP | Biomedical image-text ViT | Complete |
+| Curia | CT/MRI radiology ViT | Complete |
+| MedSigLIP | General medical image-text ViT | Complete |
+| RadImageNet | Supervised radiology CNN | Complete |
+| Jolia | CT-to-MRI negative transfer control | Complete, reported separately |
+| MOME Breast mpMRI | Multimodal breast MRI | Excluded: required DWI/T2 inputs unavailable |
+| MedImageInsight | Cloud embedding model | Access blocked: Azure Limited Preview |
+| RadFM | Large 2D/3D radiology VLM | Resource blocked on current hardware |
 
 ---
 
-# Current Benchmark Results
+# Headline Results
 
-Snapshot date: 2026-09-15.
+Official test set: **306 patients**, including **93 pCR cases**.
 
 | Setting | Model | Input | AUROC | AP | Bal Acc |
 |---|---|---|---:|---:|---:|
 | Clinical-only | Clinical baseline | Clinical variables | 0.735 | 0.502 | 0.642 |
 | Best image-only AUROC | Curia | Expert ROI, phase 2 - phase 0 | 0.630 | 0.434 | 0.578 |
 | Best image-only AP | Curia | Expert ROI, selected ROI fusion | 0.608 | 0.446 | 0.546 |
+| Best image-only balanced accuracy | RadImageNet | Whole, phase 2 - phase 0 | 0.619 | 0.396 | 0.593 |
 | Best image + clinical AUROC/AP | BiomedCLIP | Whole volume, phase 1 + clinical | 0.739 | 0.553 | 0.605 |
-| Best image + clinical balanced accuracy | Curia | Expert ROI, phase 2 - phase 0 + clinical | 0.724 | 0.543 | 0.658 |
+| Best image + clinical balanced accuracy | RadImageNet | Whole, phase 2 - phase 0 + clinical | 0.725 | 0.510 | 0.681 |
+
+Point estimates alone suggest several winners. The paired uncertainty analysis
+below determines whether they reliably improve on clinical-only.
 
 ---
 
-# Early Interpretation
+# Image-Only Results
 
-Current message to take forward carefully:
-
-- Clinical variables remain a strong baseline.
-- Image embeddings do contain pCR signal, but image-only models are not yet stronger than clinical-only.
-- Expert ROI inputs often help compared with whole-volume slice aggregation.
-- Image-plus-clinical fusion improves selected metrics, especially AP and balanced accuracy.
-- No foundation-model setup clearly dominates clinical-only across all metrics yet.
-
-This supports continuing with benchmarking before moving to heavier fine-tuning or longitudinal modeling.
+![w:1060 Best image-only run per primary model](assets/benchmark_best_image_only.png)
 
 ---
 
-# What Is Next?
+# Image + Clinical Results
 
-Dataset/release:
+![w:1060 Best image-plus-clinical run per primary model](assets/benchmark_best_image_plus_clinical.png)
 
-- keep GitHub and Hugging Face documentation updated;
-- improve dataset card as the public-facing description evolves.
+---
 
-Benchmarking:
+# Best Run Per Model: Image-Only
 
-- finish Pillar-0 expert-ROI and image-plus-clinical checks;
-- add repeated seeds or cross-validation for shortlisted configurations;
-- evaluate whether longitudinal reconstructed timepoints improve pCR prediction;
-- compare simple embedding probes against trained CNN/ViT baselines.
+Rows are selected by AUROC within each primary model.
+
+| Model | Crop/input | AUROC | AP | Bal Acc |
+|---|---|---:|---:|---:|
+| Pillar-0 | ROI, phase 0 + phase 2 + last | 0.586 | 0.403 | 0.563 |
+| RadioDINO | ROI, phase 2 - phase 0 | 0.573 | 0.387 | 0.554 |
+| BiomedCLIP | Whole, phase 1 | 0.618 | 0.404 | 0.576 |
+| Curia | ROI, phase 2 - phase 0 | **0.630** | **0.434** | 0.578 |
+| MedSigLIP | ROI, phase 2 - phase 0 | 0.621 | 0.403 | 0.565 |
+| RadImageNet | Whole, phase 2 - phase 0 | 0.619 | 0.396 | **0.593** |
+
+Image embeddings carry pCR signal, but every image-only point estimate remains
+below the clinical-only baseline.
+
+---
+
+# Best Run Per Model: Image + Clinical
+
+Rows are selected by AUROC within each primary model.
+
+| Model | Crop/input | AUROC | AP | Bal Acc |
+|---|---|---:|---:|---:|
+| Pillar-0 | ROI, phase 0 + phase 1 + last | 0.641 | 0.481 | 0.592 |
+| RadioDINO | ROI, phase 2 - phase 0 | 0.706 | 0.501 | 0.638 |
+| BiomedCLIP | Whole, phase 1 | **0.739** | **0.553** | 0.605 |
+| Curia | ROI, phase 2 - phase 0 | 0.724 | 0.543 | 0.658 |
+| MedSigLIP | Whole, phase 1 | 0.706 | 0.483 | 0.579 |
+| RadImageNet | Whole, phase 2 - phase 0 | 0.725 | 0.510 | **0.681** |
+
+Fusion raises several point estimates, but a fair comparison must be paired
+against the clinical baseline on the same test patients.
+
+---
+
+# Aggregate Paired Uncertainty
+
+Image + clinical minus clinical-only, using 5,000 paired bootstrap resamples:
+
+Clinical-only AUROC: **0.735 [0.681, 0.786]**.
+
+| Model | Delta AUROC | Delta AP | Delta Bal Acc |
+|---|---:|---:|---:|
+| BiomedCLIP | +0.004 [-0.037, 0.045] | +0.050 [-0.030, 0.111] | -0.037 [-0.092, 0.017] |
+| Curia | -0.011 [-0.070, 0.051] | +0.041 [-0.059, 0.137] | +0.016 [-0.049, 0.082] |
+| MedSigLIP | -0.030 [-0.078, 0.020] | -0.019 [-0.109, 0.059] | -0.062 [-0.117, -0.008] |
+| Pillar-0 | -0.094 [-0.168, -0.023] | -0.022 [-0.133, 0.076] | -0.049 [-0.118, 0.017] |
+| RadImageNet | -0.010 [-0.070, 0.050] | +0.008 [-0.077, 0.094] | +0.039 [-0.022, 0.100] |
+| RadioDINO | -0.029 [-0.079, 0.022] | -0.002 [-0.093, 0.079] | -0.003 [-0.057, 0.050] |
+
+**No primary image-plus-clinical configuration shows a stable aggregate gain
+over clinical-only on any metric.**
+
+---
+
+# Source-Cohort Robustness
+
+The official test set contains four source cohorts:
+
+| Cohort | N / pCR | Clinical AUROC | Best image + clinical AUROC | Interpretation |
+|---|---:|---:|---:|---|
+| DUKE | 91 / 30 | 0.787 | 0.754, RadioDINO | No stable AUROC/AP gain |
+| ISPY1 | 67 / 14 | 0.760 | 0.783, BiomedCLIP | Delta interval crosses zero |
+| ISPY2 | 131 / 46 | 0.687 | **0.786, BiomedCLIP** | **Delta +0.099 [0.026, 0.177]** |
+| NACT | 17 / 3 | 0.643 | 0.786, RadImageNet | Too small for ranking |
+
+For ISPY2, BiomedCLIP also improves AP by **+0.188 [0.073, 0.267]**.
+This is the clearest hypothesis for follow-up, but it is subgroup analysis, not
+external validation, because every source cohort also contributed training data.
+
+---
+
+# Transfer Control And Exclusions
+
+**Jolia CT-to-MRI control**
+
+- Best image-only: 0.551 AUROC, 0.347 AP, 0.555 balanced accuracy.
+- Best image + clinical: 0.672 / 0.462 / 0.615.
+- All results remain below clinical-only, as expected under CT-to-MRI domain mismatch.
+
+**Transparent exclusions**
+
+- MOME requires a multiparametric input set including DWI and T2; MAMA-MIA does not provide the required modalities.
+- MedImageInsight is available through an Azure Limited Preview, not a local checkpoint suitable for this study.
+- RadFM's official full-model path requires substantially more compatible memory and software support than the current machine provides.
+
+---
+
+# Scientific Interpretation
+
+- The clinical variables are already a strong predictor of pCR.
+- Frozen MRI/radiology representations contain modest image-only signal, with
+  Curia, MedSigLIP, BiomedCLIP, and RadImageNet clustering around AUROC 0.62-0.63.
+- ROI cropping helps some models, especially Curia and MedSigLIP, but is not a
+  universal improvement; RadImageNet and BiomedCLIP favor whole-volume inputs.
+- Complex phase concatenation is not consistently better than a carefully
+  chosen single phase or subtraction.
+- The apparent aggregate fusion gains are not statistically stable after paired
+  resampling.
+- The ISPY2 result suggests that representation usefulness depends on cohort,
+  acquisition, or treatment context.
+
+**Bottom line:** the benchmark does not justify claiming aggregate benefit from
+frozen foundation embeddings yet, but it identifies a focused, testable
+BiomedCLIP/ISPY2 hypothesis.
+
+---
+
+# Recommended Next Experiments
+
+1. **Lock this benchmark.** Do not select more configurations using the same
+   official test set.
+2. **Predeclare a leave-one-source-dataset-out study** using clinical-only and a
+   small frozen shortlist, with BiomedCLIP as the primary candidate.
+3. **Train supervised CNN/ViT baselines** under the same splits to test whether
+   frozen embeddings are actually preferable to task-specific learning.
+4. **Move to longitudinal modeling** using the reconstructed treatment
+   timepoints, while preserving source-level validation.
+5. Treat ROI choice, fusion strategy, and operating threshold as training-only
+   decisions in every follow-up experiment.
+
+The immediate decision is whether source-generalization or a supervised baseline
+should precede the longitudinal experiment.
 
 ---
 
@@ -393,13 +514,14 @@ Benchmarking:
 
 Questions for the meeting:
 
-- Is the released dataset organization clear enough for external users?
-- Should the next benchmark focus on:
-  - completing the model registry,
-  - improving ROI/segmentation-based inputs,
-  - or moving to longitudinal modeling?
-- Which metrics should be prioritized for advisor-facing comparisons: AUROC, AP, balanced accuracy, sensitivity/specificity?
-- How should the GitHub repository be structured for thesis reproducibility vs public usability?
+- Is the frozen-foundation-model benchmark sufficiently complete to lock?
+- Should the next primary experiment be leave-one-source-dataset-out validation
+  or a supervised CNN/ViT baseline?
+- Is the BiomedCLIP result in ISPY2 a sufficiently strong hypothesis to
+  predeclare as the primary source-specific comparison?
+- Which metric should drive future model selection: AUROC, AP, or a clinically
+  chosen operating point rather than validation-optimized balanced accuracy?
+- Should longitudinal modeling begin only after source generalization is tested?
 
 ---
 
@@ -414,6 +536,9 @@ Questions for the meeting:
 | Foundation model registry | `Benchmarking/foundation_model_registry.csv` |
 | Experiment matrix | `Benchmarking/experiment_matrix.md` |
 | Full result table | `Benchmarking/outputs/summaries/cross_model_all_results.md` |
+| Paired uncertainty | `Benchmarking/outputs/summaries/bootstrap_shortlist_summary.md` |
+| Source-cohort analysis | `Benchmarking/outputs/summaries/shortlist_by_dataset_summary.md` |
+| Jolia transfer control | `Benchmarking/outputs/summaries/jolia_cross_modality_summary.md` |
 
 Links:
 

@@ -1,6 +1,6 @@
 # Cross-Model All Probe Results
 
-Snapshot date: 2026-09-15
+Snapshot date: 2026-09-22
 
 This table intentionally includes every completed probe run, not only the
 headline standardized subset. Use it as the appendix/source table for the
@@ -20,6 +20,10 @@ foundation-model benchmark.
 | Pillar-0 BreastMRI | Whole volume | Phase 0 + phase 1 + phase 2 | Image-only | No | 0.542 | 0.366 | 0.531 | 306 | pillar0_breastmri_whole_phase0_phase1_phase2_logreg |
 | Pillar-0 BreastMRI | Whole volume | Phase 0 + phase 2 + last phase | Image-only | No | 0.546 | 0.358 | 0.527 | 306 | pillar0_breastmri_whole_phase0_phase2_last_logreg |
 | Pillar-0 BreastMRI | Whole volume | Subtraction triplet | Image-only | No | 0.486 | 0.318 | 0.494 | 306 | pillar0_breastmri_whole_subtractions_phase1_phase2_last_logreg |
+| Pillar-0 BreastMRI | Expert ROI | Phase 0 + phase 1 + last phase | Image-only | No | 0.572 | 0.392 | 0.527 | 306 | pillar0_breastmri_expert_roi_phase0_phase1_last_logreg |
+| Pillar-0 BreastMRI | Expert ROI | Phase 0 + phase 1 + phase 2 | Image-only | No | 0.557 | 0.369 | 0.533 | 306 | pillar0_breastmri_expert_roi_phase0_phase1_phase2_logreg |
+| Pillar-0 BreastMRI | Expert ROI | Phase 0 + phase 2 + last phase | Image-only | No | 0.586 | 0.403 | 0.563 | 306 | pillar0_breastmri_expert_roi_phase0_phase2_last_logreg |
+| Pillar-0 BreastMRI | Expert ROI | Subtraction triplet | Image-only | No | 0.568 | 0.381 | 0.552 | 306 | pillar0_breastmri_expert_roi_subtractions_phase1_phase2_last_logreg |
 | RadioDINO | Whole volume | All DCE fusion | Image-only fused embeddings | No | 0.548 | 0.351 | 0.542 | 306 | radiodino_whole_all_dce_fusion_logreg |
 | RadioDINO | Whole volume | Last phase | Image-only | No | 0.467 | 0.284 | 0.502 | 306 | radiodino_whole_last_phase_logreg |
 | RadioDINO | Whole volume | Last phase - phase 0 | Image-only | No | 0.530 | 0.322 | 0.544 | 306 | radiodino_whole_last_phase_minus_phase0_logreg |
@@ -72,11 +76,28 @@ foundation-model benchmark.
 | MedSigLIP | Expert ROI | Phase 1 | Image-only | No | 0.576 | 0.379 | 0.551 | 306 | medsiglip_expert_roi_phase1_logreg |
 | MedSigLIP | Expert ROI | Phase 2 - phase 0 | Image-only | No | 0.621 | 0.403 | 0.565 | 306 | medsiglip_expert_roi_phase2_minus_phase0_logreg |
 | MedSigLIP | Expert ROI | Selected ROI fusion | Image-only fused embeddings | No | 0.619 | 0.404 | 0.578 | 306 | medsiglip_expert_roi_selected_fusion_logreg |
+| RadImageNet | Whole volume | All DCE fusion | Image-only fused embeddings | No | 0.570 | 0.388 | 0.556 | 306 | radimagenet_whole_all_dce_fusion_logreg |
+| RadImageNet | Whole volume | Last phase | Image-only | No | 0.582 | 0.384 | 0.526 | 306 | radimagenet_whole_last_phase_logreg |
+| RadImageNet | Whole volume | Last phase - phase 0 | Image-only | No | 0.551 | 0.343 | 0.525 | 306 | radimagenet_whole_last_phase_minus_phase0_logreg |
+| RadImageNet | Whole volume | Phase 0 | Image-only | No | 0.528 | 0.346 | 0.530 | 306 | radimagenet_whole_phase0_logreg |
+| RadImageNet | Whole volume | Phase 1 | Image-only | No | 0.528 | 0.335 | 0.518 | 306 | radimagenet_whole_phase1_logreg |
+| RadImageNet | Whole volume | Phase 1 - phase 0 | Image-only | No | 0.586 | 0.352 | 0.551 | 306 | radimagenet_whole_phase1_minus_phase0_logreg |
+| RadImageNet | Whole volume | Phase 2 | Image-only | No | 0.600 | 0.396 | 0.522 | 306 | radimagenet_whole_phase2_logreg |
+| RadImageNet | Whole volume | Phase 2 - phase 0 | Image-only | No | 0.619 | 0.396 | 0.593 | 306 | radimagenet_whole_phase2_minus_phase0_logreg |
+| RadImageNet | Whole volume | Raw phase fusion | Image-only fused embeddings | No | 0.497 | 0.301 | 0.491 | 306 | radimagenet_whole_raw_phases_fusion_logreg |
+| RadImageNet | Whole volume | Subtraction fusion | Image-only fused embeddings | No | 0.604 | 0.376 | 0.582 | 306 | radimagenet_whole_subtractions_fusion_logreg |
+| RadImageNet | Expert ROI | Phase 1 | Image-only | No | 0.529 | 0.324 | 0.509 | 306 | radimagenet_expert_roi_phase1_logreg |
+| RadImageNet | Expert ROI | Phase 2 - phase 0 | Image-only | No | 0.565 | 0.351 | 0.514 | 306 | radimagenet_expert_roi_phase2_minus_phase0_logreg |
+| RadImageNet | Expert ROI | Selected ROI fusion | Image-only fused embeddings | No | 0.531 | 0.309 | 0.488 | 306 | radimagenet_expert_roi_selected_fusion_logreg |
 
 ## Image + clinical
 
 | model | crop | input | feature_set | Clinical | AUROC | AP | Bal Acc | official_test | Run |
 |---|---|---|---|---|---:|---:|---:|---|---|
+| Pillar-0 BreastMRI | Whole volume | Phase 0 + phase 1 + last phase | Image + clinical | Yes | 0.606 | 0.421 | 0.573 | 306 | pillar0_breastmri_whole_phase0_phase1_last_image_clinical_logreg |
+| Pillar-0 BreastMRI | Whole volume | Subtraction triplet | Image + clinical | Yes | 0.602 | 0.384 | 0.555 | 306 | pillar0_breastmri_whole_subtractions_phase1_phase2_last_image_clinical_logreg |
+| Pillar-0 BreastMRI | Expert ROI | Phase 0 + phase 1 + last phase | Image + clinical | Yes | 0.641 | 0.481 | 0.592 | 306 | pillar0_breastmri_expert_roi_phase0_phase1_last_image_clinical_logreg |
+| Pillar-0 BreastMRI | Expert ROI | Subtraction triplet | Image + clinical | Yes | 0.631 | 0.457 | 0.585 | 306 | pillar0_breastmri_expert_roi_subtractions_phase1_phase2_last_image_clinical_logreg |
 | RadioDINO | Whole volume | All DCE fusion | Image + clinical | Yes | 0.614 | 0.405 | 0.602 | 306 | radiodino_whole_all_dce_fusion_image_clinical_logreg |
 | RadioDINO | Whole volume | Phase 1 | Image + clinical | Yes | 0.640 | 0.407 | 0.592 | 306 | radiodino_whole_phase1_image_clinical_logreg |
 | RadioDINO | Whole volume | Phase 2 - phase 0 | Image + clinical | Yes | 0.701 | 0.475 | 0.622 | 306 | radiodino_whole_phase2_minus_phase0_image_clinical_logreg |
@@ -93,3 +114,20 @@ foundation-model benchmark.
 | MedSigLIP | Whole volume | Phase 1 | Image + clinical | Yes | 0.706 | 0.483 | 0.579 | 306 | medsiglip_whole_phase1_image_clinical_logreg |
 | MedSigLIP | Whole volume | Phase 2 - phase 0 | Image + clinical | Yes | 0.699 | 0.482 | 0.632 | 306 | medsiglip_whole_phase2_minus_phase0_image_clinical_logreg |
 | MedSigLIP | Expert ROI | Phase 2 - phase 0 | Image + clinical | Yes | 0.703 | 0.481 | 0.653 | 306 | medsiglip_expert_roi_phase2_minus_phase0_image_clinical_logreg |
+| RadImageNet | Whole volume | All DCE fusion | Image + clinical | Yes | 0.603 | 0.414 | 0.571 | 306 | radimagenet_whole_all_dce_fusion_image_clinical_logreg |
+| RadImageNet | Whole volume | Phase 1 | Image + clinical | Yes | 0.642 | 0.434 | 0.606 | 306 | radimagenet_whole_phase1_image_clinical_logreg |
+| RadImageNet | Whole volume | Phase 2 - phase 0 | Image + clinical | Yes | 0.725 | 0.510 | 0.681 | 306 | radimagenet_whole_phase2_minus_phase0_image_clinical_logreg |
+| RadImageNet | Expert ROI | Phase 2 - phase 0 | Image + clinical | Yes | 0.651 | 0.408 | 0.568 | 306 | radimagenet_expert_roi_phase2_minus_phase0_image_clinical_logreg |
+
+## Cross-modality stress test
+
+| model | crop | input | feature_set | Clinical | AUROC | AP | Bal Acc | official_test | Run |
+|---|---|---|---|---|---:|---:|---:|---|---|
+| Jolia (CT-to-MRI stress test) | Whole volume | Phase 1 | Cross-modality image + clinical | Yes | 0.635 | 0.424 | 0.593 | 306 | jolia_cross_modality_whole_phase1_image_clinical_logreg |
+| Jolia (CT-to-MRI stress test) | Whole volume | Phase 1 | Cross-modality image-only | No | 0.491 | 0.305 | 0.475 | 306 | jolia_cross_modality_whole_phase1_logreg |
+| Jolia (CT-to-MRI stress test) | Whole volume | Phase 2 - phase 0 | Cross-modality image + clinical | Yes | 0.669 | 0.431 | 0.535 | 306 | jolia_cross_modality_whole_phase2_minus_phase0_image_clinical_logreg |
+| Jolia (CT-to-MRI stress test) | Whole volume | Phase 2 - phase 0 | Cross-modality image-only | No | 0.489 | 0.321 | 0.515 | 306 | jolia_cross_modality_whole_phase2_minus_phase0_logreg |
+| Jolia (CT-to-MRI stress test) | Whole volume | Selected phase fusion | Cross-modality image + clinical | Yes | 0.605 | 0.414 | 0.551 | 306 | jolia_cross_modality_whole_selected_fusion_image_clinical_logreg |
+| Jolia (CT-to-MRI stress test) | Whole volume | Selected phase fusion | Cross-modality image-only | No | 0.551 | 0.347 | 0.555 | 306 | jolia_cross_modality_whole_selected_fusion_logreg |
+| Jolia (CT-to-MRI stress test) | Expert ROI | Phase 2 - phase 0 | Cross-modality image + clinical | Yes | 0.672 | 0.462 | 0.615 | 306 | jolia_cross_modality_expert_roi_phase2_minus_phase0_image_clinical_logreg |
+| Jolia (CT-to-MRI stress test) | Expert ROI | Phase 2 - phase 0 | Cross-modality image-only | No | 0.539 | 0.335 | 0.522 | 306 | jolia_cross_modality_expert_roi_phase2_minus_phase0_logreg |

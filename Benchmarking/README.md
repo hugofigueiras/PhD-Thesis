@@ -1,139 +1,99 @@
 # Foundation Model Benchmarking
 
-This folder contains the first benchmark layer for the advisor-requested
-foundation-model study.
+This folder contains the frozen-foundation-model benchmark for pathological
+complete response (pCR) prediction from the original MAMA-MIA pretreatment
+DCE-MRI exam and clinical variables.
 
-The immediate task is binary pCR prediction on the original MAMA-MIA
-pretreatment DCE-MRI exam. The benchmark starts with frozen foundation-model
-embeddings and lightweight probes before any model fine-tuning.
+## Status
 
-## Starting Point
+Snapshot date: 2026-09-22.
 
-Build the multiphase benchmark manifest:
+- Feasible registry screen complete.
+- 106 completed probes: 1 clinical-only, 77 image-only, and 28
+  image-plus-clinical.
+- 98 primary modality-matched/reference runs and 8 separate Jolia CT-to-MRI
+  stress-test runs.
+- Aggregate 5,000-resample paired bootstrap complete.
+- DUKE, ISPY1, ISPY2, and NACT source-cohort robustness audit complete.
+
+The live row-level checklist is in `experiment_matrix.md`. Detailed scientific
+results are in `outputs/summaries/`.
+
+## Fixed Protocol
+
+| Item | Choice |
+|---|---|
+| Target | Binary pCR |
+| Split | Official MAMA-MIA train/test split |
+| Final-fit train/test N | 1,185 / 306 |
+| Encoder | Frozen |
+| Probe | L2-regularized logistic regression |
+| Selection | Inner validation split from official training patients |
+| Metrics | AUROC, average precision, balanced accuracy |
+
+Within each run, preprocessing, regularization, and threshold selection use
+training data only. Across runs, many configurations were compared on the same
+official test set, so leaderboard winners and bootstrap intervals are
+exploratory and test-informed.
+
+## Experiment Settings
+
+1. Clinical-only establishes the non-image reference.
+2. Image-only tests whether a frozen representation contains pCR signal.
+3. Image plus clinical tests whether the image representation adds information
+   beyond clinical variables.
+
+Inputs include whole-volume and expert-ROI crops; raw DCE phases;
+post-contrast-minus-phase0 subtractions; and selected feature-level fusions.
+Pillar-0 receives 3D phase triplets as channels before its encoder. The 2D
+models aggregate sampled slice features and concatenate patient embeddings for
+phase fusion.
+
+## Completed Primary Models
+
+- Pillar-0 BreastMRI
+- RadioDINO
+- BiomedCLIP
+- Curia
+- MedSigLIP
+- RadImageNet
+
+Jolia is reported separately as a CT-to-MRI negative transfer control. MOME is
+excluded because the required DWI/T2 inputs are unavailable, MedImageInsight is
+access-blocked behind an Azure Limited Preview, and RadFM is resource-blocked
+on the current supported hardware/software path.
+
+## Headline Results
+
+| Setting | Model/input | AUROC | AP | Bal Acc |
+|---|---|---:|---:|---:|
+| Clinical-only | Clinical variables | 0.735 | 0.502 | 0.642 |
+| Best image-only AUROC | Curia ROI subtraction | 0.630 | 0.434 | 0.578 |
+| Best image-only AP | Curia ROI selected fusion | 0.608 | 0.446 | 0.546 |
+| Best image-only Bal Acc | RadImageNet whole subtraction | 0.619 | 0.396 | 0.593 |
+| Best multimodal AUROC/AP | BiomedCLIP whole phase 1 + clinical | 0.739 | 0.553 | 0.605 |
+| Best multimodal Bal Acc | RadImageNet whole subtraction + clinical | 0.725 | 0.510 | 0.681 |
+
+No primary image-plus-clinical shortlist run has a paired 95% bootstrap interval
+showing a stable aggregate improvement over clinical-only. In the ISPY2 test
+subgroup, BiomedCLIP plus clinical has exploratory improvements of +0.099
+[0.026, 0.177] AUROC and +0.188 [0.073, 0.267] AP.
+
+## Core Workflow
+
+Build the manifest:
 
 ```bash
 ./.venv/bin/python Benchmarking/build_mamamia_multiphase_manifest.py
 ```
 
-The full run reads NIfTI headers and expert masks once to audit geometry and ROI
-crop coordinates. It can take a few minutes, but it does not create image crops,
-subtraction images, embeddings, or training tensors.
-
-The script writes:
-
-```text
-Benchmarking/outputs/manifests/mamamia_multiphase_foundation_manifest.csv
-Benchmarking/outputs/manifests/mamamia_multiphase_foundation_summary.json
-```
-
-The manifest has one row per MAMA-MIA patient and records:
-
-- pCR label and official split
-- phase 0, phase 1, phase 2, and last-phase image paths
-- subtraction availability for post-contrast minus phase 0
-- expert and automatic mask paths
-- expert ROI crop coordinates with a fixed physical margin
-- flags for whole-volume, subtraction/multiphase, and expert-ROI benchmark use
-- clinical variables, with a leakage-safe clinical feature policy in the summary
-
-## Model Registry
-
-The model list lives in:
-
-```text
-Benchmarking/foundation_model_registry.csv
-```
-
-It includes the foundation models from the methodology document, with the
-training modality, training scale, disease/task context, access status, and
-current benchmark status for each model. Tracked models are Pillar-0 BreastMRI,
-MOME Breast mpMRI, Curia, MedSigLIP, MedImageInsight, BiomedCLIP, RadImageNet,
-RadioDINO, RadFM, and Jolia.
-
-## Benchmark Ladder
-
-The live experiment checklist lives in:
-
-```text
-Benchmarking/experiment_matrix.md
-```
-
-The complete exported result table for completed runs lives in:
-
-```text
-Benchmarking/outputs/summaries/cross_model_all_results.md
-Benchmarking/outputs/summaries/cross_model_first_pass_comparison.csv
-```
-
-Current snapshot: 73 completed probe runs, consisting of 1 clinical-only run,
-56 image-only embedding runs, and 16 image-plus-clinical runs.
-
-Run this order once embedding extraction scripts exist:
-
-1. clinical-only probe
-2. whole-volume phase-0 image probe
-3. whole-volume single post-contrast phase probes
-4. whole-volume subtraction probes
-5. whole-volume multiphase fusion
-6. expert-ROI single phase and subtraction probes
-7. expert-ROI multiphase fusion
-8. whole-volume plus ROI fusion
-9. image plus clinical fusion
-
-Do not start with full fine-tuning or reconstructed longitudinal timepoints. Those
-belong after the baseline foundation-model embedding benchmark is stable.
-
-## Probe Architecture
-
-All first-pass probes use:
-
-```text
-official MAMA-MIA train/test split
-  -> frozen foundation-model embeddings and/or clinical variables
-  -> train-only standardization / imputation
-  -> L2-regularized logistic regression
-  -> pCR probability
-```
-
-The official MAMA-MIA test split is never used to select hyperparameters. Each
-probe creates a stratified validation split only from official training patients,
-selects `C` by validation average precision, chooses a classification threshold
-by validation balanced accuracy, then fits the final probe on all official
-training patients before evaluating the official test patients.
-
-For image-only and image-plus-clinical runs, the foundation model is used only
-as a frozen feature extractor. Each extraction produces one patient-level
-embedding row. The logistic probe then classifies pCR from either that embedding
-alone or the embedding concatenated with the leakage-safe clinical variables.
-
-Run the clinical-only baseline:
+Train the clinical baseline:
 
 ```bash
 ./.venv/bin/python Benchmarking/train_clinical_probe.py
 ```
 
-The script writes:
-
-```text
-Benchmarking/outputs/probes/clinical_logreg/
-  metrics.json
-  test_predictions.csv
-  train_predictions.csv
-  coefficients.csv
-  model.joblib
-  run_config.json
-```
-
-After one or more probe runs, summarize them:
-
-```bash
-./.venv/bin/python Benchmarking/summarize_probe_runs.py \
-  Benchmarking/outputs/probes/clinical_logreg
-```
-
-## Embedding Probe Contract
-
-Extract a small RadioDINO smoke set first:
+Extract a small 2D smoke set:
 
 ```bash
 ./.venv/bin/python Benchmarking/extract_2d_foundation_embeddings.py \
@@ -145,14 +105,7 @@ Extract a small RadioDINO smoke set first:
   --device cpu
 ```
 
-This writes patient-level embeddings to:
-
-```text
-Benchmarking/outputs/embeddings/radiodino/whole_phase0/patient_embeddings.csv
-```
-
-Once a foundation-model extractor writes patient-level embeddings for enough
-train and test patients, train the same logistic probe with:
+Train a probe from an embedding table:
 
 ```bash
 ./.venv/bin/python Benchmarking/train_embedding_probe.py \
@@ -161,10 +114,25 @@ train and test patients, train the same logistic probe with:
   --output-dir Benchmarking/outputs/probes/<model>_<input>_logreg
 ```
 
-The embedding CSV must contain one row per patient:
+Regenerate completed summaries without rerunning image extraction:
 
-```text
-patient_id,emb_0000,emb_0001,emb_0002,...
+```bash
+./.venv/bin/python Benchmarking/summarize_probe_runs.py Benchmarking/outputs/probes/*
+./.venv/bin/python Benchmarking/build_cross_model_comparison.py
+./.venv/bin/python Benchmarking/bootstrap_benchmark_shortlist.py --n-bootstrap 5000 --seed 20260921
+./.venv/bin/python Benchmarking/analyze_shortlist_by_dataset.py --n-bootstrap 5000 --seed 20260922
 ```
 
-Use `--feature-prefix emb_` if the file includes additional metadata columns.
+## Key Outputs
+
+- `outputs/manifests/mamamia_multiphase_foundation_manifest.csv`
+- `outputs/summaries/probe_run_summary.csv`
+- `outputs/summaries/cross_model_all_results.md`
+- `outputs/summaries/cross_model_best_by_metric.csv`
+- `outputs/summaries/bootstrap_shortlist_summary.md`
+- `outputs/summaries/shortlist_by_dataset_summary.md`
+- `outputs/summaries/jolia_cross_modality_summary.md`
+
+The next stage should lock the current official test set and predeclare a
+source-generalization experiment, followed by a supervised CNN/ViT baseline and
+then longitudinal modeling.

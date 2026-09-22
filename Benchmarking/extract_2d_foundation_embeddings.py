@@ -30,6 +30,15 @@ DEFAULT_MANIFEST = (
 )
 DEFAULT_OUTPUT_ROOT = Path(__file__).resolve().parent / "outputs" / "embeddings"
 DEFAULT_CACHE_DIR = Path(__file__).resolve().parent / "outputs" / "model_cache"
+DEFAULT_RADIMAGENET_WEIGHTS = (
+    Path(__file__).resolve().parent
+    / "outputs"
+    / "model_weights"
+    / "radimagenet"
+    / "extracted"
+    / "RadImageNet_pytorch"
+    / "ResNet50.pt"
+)
 
 MODEL_SPECS = {
     "biomedclip": {
@@ -70,6 +79,17 @@ MODEL_SPECS = {
         "mean": (0.485, 0.456, 0.406),
         "std": (0.229, 0.224, 0.225),
         "embedding_note": "ViT-small DINO features pretrained on RadImageNet.",
+    },
+    "radimagenet": {
+        "model_id": "BMEII-AI/RadImageNet ResNet50",
+        "loader": "radimagenet",
+        "image_size": 224,
+        "mean": (0.5, 0.5, 0.5),
+        "std": (0.5, 0.5, 0.5),
+        "embedding_note": (
+            "ResNet-50 image features supervised-pretrained on 1.35M "
+            "RadImageNet CT, MRI, and ultrasound images."
+        ),
     }
 }
 
@@ -117,6 +137,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT_ROOT)
     parser.add_argument("--cache-dir", type=Path, default=DEFAULT_CACHE_DIR)
+    parser.add_argument(
+        "--radimagenet-weights",
+        type=Path,
+        default=DEFAULT_RADIMAGENET_WEIGHTS,
+        help="Official RadImageNet ResNet-50 PyTorch state dict.",
+    )
     parser.add_argument("--usable-flag", default=None)
     parser.add_argument("--split", choices=("all", "train", "test"), default="all")
     parser.add_argument("--max-patients", type=int, default=None)
@@ -243,6 +269,7 @@ def load_model(
     pretrained: bool,
     device: torch.device,
     torch_dtype: torch.dtype | None,
+    radimagenet_weights: Path,
 ) -> LoadedModel:
     spec = MODEL_SPECS[model_key]
     processor = None
@@ -257,6 +284,35 @@ def load_model(
             )
         except TypeError:
             model = timm.create_model(str(spec["model_id"]), pretrained=pretrained)
+    elif spec["loader"] == "radimagenet":
+        from torchvision.models import resnet50
+
+        class RadImageNetBackbone(torch.nn.Module):
+            def __init__(self) -> None:
+                super().__init__()
+                base_model = resnet50(weights=None)
+                self.backbone = torch.nn.Sequential(*list(base_model.children())[:9])
+
+            def forward(self, images: torch.Tensor) -> torch.Tensor:
+                return self.backbone(images)
+
+        model = RadImageNetBackbone()
+        if pretrained:
+            weights_path = radimagenet_weights.resolve()
+            if not weights_path.is_file():
+                raise FileNotFoundError(
+                    "RadImageNet weights not found at "
+                    f"{weights_path}. Download the official PyTorch archive and "
+                    "pass --radimagenet-weights if using another location."
+                )
+            state = torch.load(weights_path, map_location="cpu", weights_only=True)
+            if isinstance(state, dict) and "state_dict" in state:
+                state = state["state_dict"]
+            if not isinstance(state, dict):
+                raise TypeError(
+                    f"Expected a state dict in {weights_path}, got {type(state)!r}"
+                )
+            model.load_state_dict(state, strict=True)
     elif spec["loader"] == "open_clip":
         if not pretrained:
             raise ValueError("--no-pretrained is not supported for OpenCLIP models")
@@ -682,6 +738,7 @@ def main() -> None:
             device=device,
             loader=str(spec["loader"]),
         ),
+        radimagenet_weights=args.radimagenet_weights,
     )
 
     records: list[dict[str, object]] = []
