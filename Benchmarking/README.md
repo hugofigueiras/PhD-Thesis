@@ -16,8 +16,19 @@ Snapshot date: 2026-09-22.
 - Aggregate 5,000-resample paired bootstrap complete.
 - DUKE, ISPY1, ISPY2, and NACT source-cohort robustness audit complete.
 
-The live row-level checklist is in `experiment_matrix.md`. Detailed scientific
-results are in `outputs/summaries/`.
+The [illustrated benchmark report](../docs/benchmark_results.md) summarizes the
+design, results, uncertainty analysis, and scientific interpretation. The live
+row-level checklist is in [`experiment_matrix.md`](experiment_matrix.md), and
+the reproducible result tables are in [`outputs/summaries/`](outputs/summaries/).
+
+## Benchmark Overview
+
+![Foundation-model benchmarking pipeline](../presentations/assets/benchmarking_pipeline.svg)
+
+The frozen image branch and training-fit clinical branch produce three directly
+comparable feature settings: clinical-only, image-only, and image plus clinical.
+Only the L2-regularized logistic-regression probe is trained for the downstream
+pCR task.
 
 ## Fixed Protocol
 
@@ -49,6 +60,14 @@ Pillar-0 receives 3D phase triplets as channels before its encoder. The 2D
 models aggregate sampled slice features and concatenate patient embeddings for
 phase fusion.
 
+![DCE-MRI image-fusion strategies](../presentations/assets/fusion_strategy.svg)
+
+Expert-ROI inputs use a tumor bounding box derived from the phase-0 MAMA-MIA
+expert mask, expanded by a 30 x 30 x 20 mm physical margin. The same clipped
+coordinates are applied to every phase and subtraction input.
+
+![Expert-ROI crop strategy](../presentations/assets/roi_crop_strategy.svg)
+
 ## Completed Primary Models
 
 - Pillar-0 BreastMRI
@@ -78,6 +97,14 @@ No primary image-plus-clinical shortlist run has a paired 95% bootstrap interval
 showing a stable aggregate improvement over clinical-only. In the ISPY2 test
 subgroup, BiomedCLIP plus clinical has exploratory improvements of +0.099
 [0.026, 0.177] AUROC and +0.188 [0.073, 0.267] AP.
+
+### Image-Only Comparison
+
+![Best image-only run per primary model](../presentations/assets/benchmark_best_image_only.png)
+
+### Image-Plus-Clinical Comparison
+
+![Best image-plus-clinical run per primary model](../presentations/assets/benchmark_best_image_plus_clinical.png)
 
 ## Core Workflow
 
