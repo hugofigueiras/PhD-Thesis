@@ -389,6 +389,7 @@ Rows are selected by AUROC within each primary model.
 
 | Model | Crop/input | AUROC | AP | Bal Acc |
 |---|---|---:|---:|---:|
+| **Clinical-only reference** | Clinical variables | **0.735** | **0.502** | **0.642** |
 | Pillar-0 | ROI, phase 0 + phase 2 + last | 0.586 | 0.403 | 0.563 |
 | RadioDINO | ROI, phase 2 - phase 0 | 0.573 | 0.387 | 0.554 |
 | BiomedCLIP | Whole, phase 1 | 0.618 | 0.404 | 0.576 |
@@ -407,6 +408,7 @@ Rows are selected by AUROC within each primary model.
 
 | Model | Crop/input | AUROC | AP | Bal Acc |
 |---|---|---:|---:|---:|
+| **Clinical-only reference** | Clinical variables | **0.735** | **0.502** | **0.642** |
 | Pillar-0 | ROI, phase 0 + phase 1 + last | 0.641 | 0.481 | 0.592 |
 | RadioDINO | ROI, phase 2 - phase 0 | 0.706 | 0.501 | 0.638 |
 | BiomedCLIP | Whole, phase 1 | **0.739** | **0.553** | 0.605 |

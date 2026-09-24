@@ -70,8 +70,8 @@
   <path class="arrow" d="M 1140 265 L 1205 265"/>
   <path class="arrow" d="M 1325 325 C 1325 380, 745 365, 745 425"/>
   <path class="arrow" d="M 855 480 L 920 480"/>
-  <path class="arrow" d="M 1140 480 L 1205 480"/>
+  <path class="arrow" d="M 745 535 L 745 570 L 1325 570 L 1325 535"/>
 
-  <text class="label" x="888" y="404">pass</text>
-  <text class="label" x="1172" y="404">fail</text>
+  <text class="label" x="888" y="462">pass</text>
+  <text class="label" x="1035" y="563">fail</text>
 </svg>

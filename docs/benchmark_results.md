@@ -7,6 +7,11 @@ probe runs: 1 clinical-only, 77 image-only, and 28 image-plus-clinical. Of
 these, 98 are primary modality-matched/reference runs and 8 are the separate
 Jolia CT-to-MRI stress test.
 
+This report summarizes the benchmark design, the image-fusion strategies, the
+headline results, and the uncertainty and source-cohort analyses. The complete
+run-level results remain available in the reproducible outputs listed at the
+end of the report.
+
 ## Evaluation Protocol
 
 | Field | Value |
@@ -27,6 +32,35 @@ input, crop, and fusion configurations were compared on the same test set.
 Headline winners and their bootstrap intervals are therefore exploratory and
 test-informed, not confirmatory evidence.
 
+![Foundation-model benchmarking pipeline](../presentations/assets/benchmarking_pipeline.svg)
+
+The image branch converts each selected MRI input into a frozen patient-level
+embedding. The clinical branch uses imputation, categorical encoding, and
+scaling fit on training patients only. The probe receives image features,
+clinical features, or their concatenation.
+
+## Imaging And Fusion Strategy
+
+For the 2D encoders, up to 16 slices are sampled uniformly across the third
+dimension of each whole volume or tumor-centered crop. Each slice is normalized,
+resized, and encoded independently. Mean pooling produces one patient embedding
+per input. Multiphase fusion concatenates those patient embeddings after the
+frozen encoder.
+
+Pillar-0 is the modality-matched native 3D model. Its channels are separately
+resampled, normalized, and center-cropped or padded before three raw DCE phases
+or three subtraction volumes are stacked and passed jointly through the frozen
+3D vision encoder.
+
+![DCE-MRI image-fusion strategies](../presentations/assets/fusion_strategy.svg)
+
+Expert-ROI experiments use the MAMA-MIA expert mask from phase 0. The tumor
+bounding box is expanded by 30 x 30 x 20 mm, clipped to the image bounds, and
+applied at the same coordinates to every phase and subtraction input. The crops
+are generated in memory; the source NIfTI files are not modified.
+
+![Expert-ROI crop strategy](../presentations/assets/roi_crop_strategy.svg)
+
 ## Clinical Reference
 
 | AUROC | Average precision | Balanced accuracy |
@@ -40,6 +74,8 @@ features add useful information.
 
 Rows are selected by AUROC within each model. AP and balanced accuracy are from
 the same selected run.
+
+![Best image-only run per primary model](../presentations/assets/benchmark_best_image_only.png)
 
 | Model | Crop/input | AUROC | AP | Bal Acc |
 |---|---|---:|---:|---:|
@@ -57,6 +93,8 @@ clinical baseline.
 ## Best Image-Plus-Clinical Run Per Primary Model
 
 Rows are selected by AUROC within each model.
+
+![Best image-plus-clinical run per primary model](../presentations/assets/benchmark_best_image_plus_clinical.png)
 
 | Model | Crop/input | AUROC | AP | Bal Acc |
 |---|---|---:|---:|---:|

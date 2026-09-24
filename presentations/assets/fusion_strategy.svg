@@ -40,14 +40,14 @@
   <text class="text" x="182.5" y="318">Phase 1 / 2 / last</text>
 
   <rect class="box phase" x="330" y="205" width="190" height="100"/>
-  <text class="text" x="425" y="242">Optional</text>
-  <text class="text" x="425" y="272">subtraction</text>
-  <text class="sub" x="425" y="295">post - phase 0</text>
+  <text class="text" x="425" y="242">Build image</text>
+  <text class="text" x="425" y="272">inputs</text>
+  <text class="sub" x="425" y="295">raw or subtraction</text>
 
   <rect class="box model" x="585" y="205" width="210" height="100"/>
-  <text class="text" x="690" y="242">Sample 2D slices</text>
-  <text class="sub" x="690" y="272">normalize + resize</text>
-  <text class="sub" x="690" y="295">encode each slice</text>
+  <text class="text" x="690" y="242">Sample + encode</text>
+  <text class="sub" x="690" y="272">each input separately</text>
+  <text class="sub" x="690" y="295">frozen 2D model</text>
 
   <rect class="box model" x="855" y="205" width="210" height="100"/>
   <text class="text" x="960" y="242">Aggregate</text>
@@ -55,9 +55,9 @@
   <text class="sub" x="960" y="295">mean embedding</text>
 
   <rect class="box fusion" x="1125" y="205" width="250" height="100"/>
-  <text class="text" x="1250" y="237">Concatenate</text>
-  <text class="text" x="1250" y="267">patient embeddings</text>
-  <text class="sub" x="1250" y="292">raw phases / subtractions / all</text>
+  <text class="text" x="1250" y="237">Patient feature</text>
+  <text class="text" x="1250" y="267">vector</text>
+  <text class="sub" x="1250" y="292">single or concatenated embeddings</text>
 
   <path class="arrow" d="M 270 215 L 330 238"/>
   <path class="arrow" d="M 270 310 L 330 272"/>
@@ -70,14 +70,14 @@
   <text class="note" x="855" y="450">3D model receives a multi-channel volume before embedding</text>
 
   <rect class="box phase" x="115" y="505" width="235" height="95"/>
-  <text class="text" x="232.5" y="540">3D channel stack</text>
-  <text class="sub" x="232.5" y="570">phase0, phase1, last</text>
-  <text class="sub" x="232.5" y="593">or subtraction triplet</text>
+  <text class="text" x="232.5" y="540">Select 3D channels</text>
+  <text class="sub" x="232.5" y="570">raw phase triplet or</text>
+  <text class="sub" x="232.5" y="593">subtraction triplet</text>
 
   <rect class="box model" x="430" y="505" width="235" height="95"/>
-  <text class="text" x="547.5" y="540">3D preprocessing</text>
-  <text class="sub" x="547.5" y="570">resample, normalize,</text>
-  <text class="sub" x="547.5" y="593">center crop/pad</text>
+  <text class="text" x="547.5" y="540">Preprocess + stack</text>
+  <text class="sub" x="547.5" y="570">each channel resampled,</text>
+  <text class="sub" x="547.5" y="593">normalized, cropped/padded</text>
 
   <rect class="box model" x="745" y="505" width="235" height="95"/>
   <text class="text" x="862.5" y="540">Pillar-0</text>

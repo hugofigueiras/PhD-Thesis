@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1500" height="640" viewBox="0 0 1500 640" role="img" aria-labelledby="title desc">
   <title id="title">Foundation-model benchmarking pipeline</title>
-  <desc id="desc">Flowchart showing official MAMA-MIA split, benchmark manifest, image input selection, preprocessing, frozen model embedding, optional clinical variables, logistic regression, pCR probability, and test evaluation.</desc>
+  <desc id="desc">Flowchart showing the official MAMA-MIA split, benchmark manifest, frozen image embedding branch, training-fit clinical preprocessing branch, image-only, clinical-only or fused feature assembly, logistic regression, and official test evaluation.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
@@ -50,41 +50,44 @@
   <text class="text" x="1310" y="165">model</text>
   <text class="sub" x="1310" y="191">no fine-tuning</text>
 
-  <rect class="box model" x="895" y="345" width="235" height="110"/>
-  <text class="text" x="1012.5" y="387">Patient-level</text>
-  <text class="text" x="1012.5" y="417">embedding</text>
-
   <rect class="box data" x="325" y="345" width="225" height="110"/>
   <text class="text" x="437.5" y="387">Clinical</text>
   <text class="text" x="437.5" y="417">variables</text>
 
   <rect class="box data" x="605" y="345" width="235" height="110"/>
-  <text class="text" x="722.5" y="385">Train-only</text>
-  <text class="text" x="722.5" y="415">impute/scale</text>
+  <text class="text" x="722.5" y="383">Training-fit</text>
+  <text class="text" x="722.5" y="413">preprocessing</text>
+  <text class="sub" x="722.5" y="440">impute / encode / scale</text>
 
-  <rect class="box probe" x="1185" y="345" width="250" height="110"/>
-  <text class="text" x="1310" y="385">L2 logistic</text>
-  <text class="text" x="1310" y="415">regression</text>
+  <rect class="box probe" x="895" y="345" width="235" height="110"/>
+  <text class="text" x="1012.5" y="383">Feature set</text>
+  <text class="sub" x="1012.5" y="413">image / clinical</text>
+  <text class="sub" x="1012.5" y="438">or concatenated</text>
 
-  <rect class="box eval" x="895" y="510" width="235" height="90"/>
-  <text class="text" x="1012.5" y="548">pCR</text>
-  <text class="text" x="1012.5" y="578">probability</text>
+  <rect class="box model" x="1185" y="345" width="250" height="110"/>
+  <text class="text" x="1310" y="387">Patient-level</text>
+  <text class="text" x="1310" y="417">image embedding</text>
+
+  <rect class="box probe" x="895" y="510" width="235" height="90"/>
+  <text class="text" x="1012.5" y="548">L2 logistic</text>
+  <text class="text" x="1012.5" y="578">regression</text>
 
   <rect class="box eval" x="1185" y="510" width="250" height="90"/>
-  <text class="text" x="1310" y="548">Official test</text>
-  <text class="text" x="1310" y="578">evaluation</text>
+  <text class="text" x="1310" y="543">Official test</text>
+  <text class="sub" x="1310" y="573">pCR probability + metrics</text>
 
   <path class="arrow" d="M 270 150 L 325 150"/>
   <path class="arrow" d="M 550 150 L 605 150"/>
+  <path class="arrow" d="M 437.5 205 L 437.5 345"/>
   <path class="arrow" d="M 840 150 L 895 150"/>
   <path class="arrow" d="M 1130 150 L 1185 150"/>
-  <path class="arrow" d="M 1310 205 C 1310 285, 1013 285, 1013 345"/>
+  <path class="arrow" d="M 1310 205 L 1310 345"/>
   <path class="arrow" d="M 550 400 L 605 400"/>
   <path class="arrow" d="M 840 400 L 895 400"/>
-  <path class="arrow" d="M 1130 400 L 1185 400"/>
-  <path class="arrow" d="M 1310 455 C 1310 500, 1013 485, 1013 510"/>
+  <path class="arrow" d="M 1185 400 L 1130 400"/>
+  <path class="arrow" d="M 1013 455 L 1013 510"/>
   <path class="arrow" d="M 1130 555 L 1185 555"/>
 
-  <text class="note" x="980" y="292">image branch</text>
-  <text class="note" x="575" y="505">clinical branch only uses training-fit preprocessing</text>
+  <text class="note" x="1220" y="292">image branch</text>
+  <text class="note" x="575" y="505">clinical branch</text>
 </svg>
